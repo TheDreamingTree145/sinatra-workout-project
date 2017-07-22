@@ -12,8 +12,23 @@ class UsersController < ApplicationController
     end
   end
 
-  post '/signup' do
+  get '/users/:slug' do
+    binding.pry
+    if logged_in?
+      @user = current_user
+      if @user = User.find_by_slug(params[:slug])
+        erb :'/users/show'
+      else
+        flash[:login_mesage] = "You must be logged in to view your user page"
+        redirect '/login'
+      end
+    else
+      flash[:login_mesage] = "You must be logged in to view your user page"
+      redirect '/login'
+    end
+  end
 
+  post '/signup' do
     if User.all.find {|user| user.username == params[:username]}
       flash[:username_message] = "Username already taken. If you already have an account please go to the login page."
       redirect '/signup'
