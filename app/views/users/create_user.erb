@@ -1,3 +1,9 @@
+<% if flash.has?(:username_message) %>
+  <%=flash[:username_message]%>
+<% elsif flash.has?(:email_message) %>
+  <%=flash[:email_message]%>
+<%end%>
+
 <h2>Signup below to create and save workouts!</h2>
 
 <form class="" action="/signup" method="post">

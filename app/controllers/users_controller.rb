@@ -25,9 +25,7 @@ class UsersController < ApplicationController
       @user.save
       session[:user_id] = @user.id
       redirect "/users/#{@user.slug}"
-    else
-
-      redirect
+    end
   end
 
 end
