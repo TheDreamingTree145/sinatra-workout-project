@@ -8,4 +8,7 @@ class UsersController < Application Controller
       erb :'/users/create_user'
     end
   end
+
+
+
 end
