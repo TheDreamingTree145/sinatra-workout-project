@@ -1,7 +1,8 @@
 <% if flash.has?(:username_message) %>
-  <%=flash[:username_message]%>
-<% elsif flash.has?(:email_message) %>
+  <%=flash[:username_message]%> Go to <a href="/login">Login Page</a>
+<% elsif flash.has?(:email_message) %> <a href="/login">Login Page</a>
   <%=flash[:email_message]%>
+
 <%end%>
 
 <h2>Signup below to create and save workouts!</h2>
