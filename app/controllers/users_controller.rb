@@ -13,7 +13,6 @@ class UsersController < ApplicationController
   end
 
   get '/users/:slug' do
-    binding.pry
     if logged_in?
       @user = current_user
       if @user = User.find_by_slug(params[:slug])
