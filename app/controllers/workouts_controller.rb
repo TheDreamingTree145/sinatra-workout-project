@@ -14,6 +14,7 @@ class WorkoutsController < ApplicationController
   get '/workouts/new' do
     if logged_in?
       @user = current_user
+      @all_exercises = Exercise.all
       erb :'/workouts/create_workout'
     else
       flash[:login_mesage] = "You must be logged in to create a workout"

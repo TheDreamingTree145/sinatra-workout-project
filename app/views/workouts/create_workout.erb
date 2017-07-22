@@ -8,9 +8,24 @@
     <input id="<%=work%>" type="radio" name="workout[types]" value="<%=work%>"><%=work%></input>
   <%end%>
   <br><br>
-  <h4>Choose existing exercises to add!</h4>
+  <h4>Choose existing exercises to add!</h4> <%# remember need to make exercise category shown somehow %>
   <%@all_exercises.each do |cise|%>
     <input id="<%=cise.name%>" type="checkbox" name="exercises[]" value="<%=cise.id%>">
-    <%end%>
-    
+  <%end%>
+  <br><br>
+  <h4>and/or add new exercises to list</h4>
+    <form class="" action="index.html" method="post"> <%# nested form %>
+      <label for="exercise[name]">Name:</label>
+      <input type="name" name="exercise[name]" value="">
+      <label for="exercise[sets]">Number of sets:</label>
+      <input type="text" name="exercise[sets]" value="3">
+      <label for="exercise[reps]">Number of reps:</label>
+      <input type="text" name="exercise[reps]" value="10"><br>
+      <label for="exercise[category]">Category:</label>
+      <% EXERCISE_TYPES.each do |work|%>
+        <input id="<%=work%>" type="radio" name="exercise[types]" value="<%=work%>"><%=work%></input>
+      <%end%>
+      <input type="submit" name="" value="Add New Exercise">
+    </form>
+
 </form>

@@ -10,6 +10,7 @@ class ApplicationController < Sinatra::Base
   end
 
   WORKOUT_TYPES = ["Chest", "Arms", "Legs", "Back"]
+  EXERCISE_TYPES = ["Chest", "Arms", "Legs", "Back"]
 
   get "/" do
     erb :welcome
