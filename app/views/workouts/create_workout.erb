@@ -1,0 +1,16 @@
+<h2>Create a new workout!</h2>
+
+<form class="" action="/workouts" method="post">
+  <label for="workouts[name]">Name:</label>
+  <input type="text" name="workouts[name]" value=""><br><br>
+  <h4>Choose a workout category!</h4><br>
+  <% WORKOUT_TYPES.each do |work|%>
+    <input id="<%=work%>" type="radio" name="workout[types]" value="<%=work%>"><%=work%></input>
+  <%end%>
+  <br><br>
+  <h4>Choose existing exercises to add!</h4>
+  <%@all_exercises.each do |cise|%>
+    <input id="<%=cise.name%>" type="checkbox" name="exercises[]" value="<%=cise.id%>">
+    <%end%>
+    
+</form>
