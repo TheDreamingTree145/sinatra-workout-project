@@ -27,6 +27,11 @@ class UsersController < ApplicationController
     end
   end
 
+  get '/login' do
+
+    erb :'/users/login'
+  end
+
   post '/signup' do
     if User.all.find {|user| user.username == params[:username]}
       flash[:username_message] = "Username already taken. If you already have an account please go to the login page."

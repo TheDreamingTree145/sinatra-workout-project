@@ -1,0 +1,9 @@
+
+<h2>Here are all workouts users have made!</h2>
+<%@all_workouts.each do |workout|%>
+<ul>
+  <a href="/workouts/<%=workout.slug%>"><li><%=workout.name%></li></a>
+  <li><%=workout.category%></li>
+  <li><%=workout.created_by%></li>
+  <br>
+</ul>
