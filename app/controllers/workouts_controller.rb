@@ -25,6 +25,10 @@ class WorkoutsController < ApplicationController
     end
   end
 
+  get '/workouts/:slug' do
+    
+  end
+
   post '/workouts' do
     @user = current_user
     if params[:exercises].nil?
@@ -40,8 +44,13 @@ class WorkoutsController < ApplicationController
       @workout.exercises << Exercise.all.find_by_id(id)
     end
     @workout.created_by = @user.username #do i want the object here?
-    @user.save
-    @workout.save
+    if @workout.valid?
+      @user.save
+      @workout.save
+      redirect "/workouts/#{@workout.slug}"
+    else
+      flash[:workout_create_message] = "Please make sure all fields are filled out when creating a new workout"
+      redirect '/workouts/new'
   end
 
   post '/workouts/new/exercises' do
