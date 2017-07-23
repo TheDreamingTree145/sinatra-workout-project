@@ -17,23 +17,24 @@ class WorkoutsController < ApplicationController
       @all_exercises = Exercise.all
       erb :'/workouts/create_workout'
     else
-      flash[:login_mesage] = "You must be logged in to create a workout"
+      flash[:login_message] = "You must be logged in to create a workout"
       redirect '/login'
     end
   end
 
   post '/workouts' do
-    binding.pry
-    if logged_in?
-      @user = current_user
+    @user = current_user
     end
   end
 
   post '/workouts/new/exercises' do
-    if logged_in?
-      @user = current_user
-      binding.pry
+    @user = current_user
+    if Exercise.all.each {|cise| cise.name.downcase == params[:exercise][:name].downcase}
+      flash[:exercise_exists_message] = "That exercise already exists"
       redirect '/workouts/new'
+    else
+      flash[:exercise_workout_message] = "Successfully added exercise to database"
+      redirect 'workouts/new'
     end
   end
 end
