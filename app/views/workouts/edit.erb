@@ -1,5 +1,7 @@
 <h2>Edit workout below!</h2>
+<p>If you're going to create a new exercise to add, please do so before filling out the rest of the form!</p>
 <p>Note: You may only edit a workout if you created it!</p>
+
 
 <form action="/workouts/<%=@workout.slug%>/edit" method="post">
   <input type="hidden" id="hidden" name="_method" value="patch">
@@ -11,4 +13,10 @@
     <input id="<%=work%>" type="radio" name="workouts[category]" value="<%=work%>" <%='checked' if @workout.category.include?(work)%>><%=work%></input>
   <%end%>
   <br><br>
+  <h4>Choose existing exercises to add!</h4> <%# remember need to make exercise category shown somehow %>
+  <%@all_exercises.each do |cise|%>
+    <input id="<%=cise.name%>" type="checkbox" name="exercises[]" value="<%=cise.id%>" <%='checked' if @workout.exercises.include?(cise)%>><%=cise.name%></input>
+  <%end%>
+  <br><br>
+      <input type="submit" name="" value="Create New Workout">
 </form>

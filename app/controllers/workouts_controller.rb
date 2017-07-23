@@ -62,7 +62,7 @@ class WorkoutsController < ApplicationController
     end
   end
 
-  post '/workouts/new/exercises' do
+  post '/workouts/new/exercises' do #not sure about
     @user = current_user
     @all_exercises = Exercise.all
   # Necessary only on first instance
@@ -96,6 +96,7 @@ class WorkoutsController < ApplicationController
     if logged_in?
       @user = current_user
       @workout = Workout.find_by_slug(params[:slug])
+      @all_exercises = Exercise.all 
       erb :'/workouts/edit'
     else
       flash[:message] = "Login to edit a workout"
