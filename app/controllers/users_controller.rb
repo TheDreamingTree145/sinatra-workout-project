@@ -6,6 +6,7 @@ class UsersController < ApplicationController
   get '/signup' do
     if logged_in?
       @user = current_user
+      flash[:create_message] = "Successfully created account!"
       redirect "/users/#{@user.slug}"
     else
       erb :'/users/create_user'

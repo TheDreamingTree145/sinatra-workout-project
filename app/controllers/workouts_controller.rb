@@ -1,6 +1,9 @@
-class WorkoutsController < ApplicationController
+require 'rack-flash'
 
-  get '/workouts' do
+class WorkoutsController < ApplicationController
+  use Rack::Flash
+
+  get '/workouts' do #Want to be able to add a workout to a user
     if logged_in?
       @user = current_user
       @all_workouts = Workout.all

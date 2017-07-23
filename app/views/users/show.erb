@@ -1,3 +1,7 @@
+<% if flash.has?(:create_message) %>
+  <%=flash[:create_message]%>
+<%end%>
+
 <h2>Welcome, <%=@user.username%></h2>
 
 <h4>Here are your workouts!</h4>
