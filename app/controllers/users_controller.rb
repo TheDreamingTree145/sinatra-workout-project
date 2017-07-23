@@ -44,9 +44,10 @@ class UsersController < ApplicationController
   get '/login' do
     if logged_in?
       @user = current_user
-      redirect '/users/#{@user.slug}'
+      redirect "/users/#{@user.slug}"
     else
       erb :'/users/login'
+    end
   end
 
   post '/signup' do
