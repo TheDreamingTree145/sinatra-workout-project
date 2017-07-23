@@ -18,11 +18,11 @@ class UsersController < ApplicationController
       if @user = User.find_by_slug(params[:slug])
         erb :'/users/show'
       else
-        flash[:login_mesage] = "You must be logged in to view your user page"
+        flash[:login_message] = "You must be logged in to view your user page"
         redirect '/login'
       end
     else
-      flash[:login_mesage] = "You must be logged in to view your user page"
+      flash[:login_message] = "You must be logged in to view your user page"
       redirect '/login'
     end
   end
