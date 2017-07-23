@@ -27,6 +27,10 @@ class WorkoutsController < ApplicationController
 
   post '/workouts' do
     @user = current_user
+    if params[:exercises].nil?
+      flash[:choose_one] = "Please choose at least one exercise for the workout"
+      redirect '/workouts/new'
+    end
     @workout = Workout.new(params[:workouts])
     @user.workouts << @workout
     params[:exercises].each do |id|
@@ -43,6 +47,15 @@ class WorkoutsController < ApplicationController
   post '/workouts/new/exercises' do
     @user = current_user
     @all_exercises = Exercise.all
+  # Necessary only on first instance
+  #  if @all_exercises.empty?
+  #    @exercise = Exercise.new(params[:exercise])
+  #    if @exercise.valid?
+  #      @exercise.save
+  #      flash[:exercise_create_message] = "Successfully added exercise to database"
+  #      redirect '/workouts/new'
+  #    end
+  #  end
     @all_exercises.each do |cise|
       if cise.name.downcase == params[:exercise][:name].downcase
         flash[:exercise_create_message] = "That exercise already exists"

@@ -2,6 +2,11 @@
 <%=flash[:exercise_create_message]%>
 <%end%>
 
+<% if flash.has?(:choose_one) %>
+  <%=flash[:choose_one]%>
+<%end%>
+
+
 <h2>Create a new workout!</h2>
 <p>If you're going to create a new exercise, do so before filling out the rest of the form!</p>
 <form class="" action="/workouts" method="post">

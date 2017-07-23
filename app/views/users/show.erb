@@ -2,6 +2,10 @@
   <%=flash[:create_message]%>
 <%end%>
 
+<% if flash.has?(:choose_one) %>
+  <%=flash[:choose_one]%>
+<%end%>
+
 <h2>Welcome, <%=@user.username%></h2>
 
 <h4>Here are your workouts!</h4>
