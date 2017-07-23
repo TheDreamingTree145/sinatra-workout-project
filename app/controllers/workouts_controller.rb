@@ -27,6 +27,17 @@ class WorkoutsController < ApplicationController
 
   post '/workouts' do
     @user = current_user
+    @workout = Workout.new(params[:workouts])
+    @user.workouts << @workout
+    params[:exercises].each do |id|
+      if !@user.exercises.include?(Exercise.all.find_by_id(id))
+        @user.exercises << Exercise.all.find_by_id(id)
+      end
+      @workout.exercises << Exercise.all.find_by_id(id)
+    end
+    @workout.created_by = @user.username #do i want the object here?
+    @user.save
+    @workout.save
   end
 
   post '/workouts/new/exercises' do
