@@ -11,6 +11,6 @@
   <br>
 
 <h4>Here are all your exercises!</h4>
-  <% @user.workouts.each do |exercise| %>
-    <a href="/exercises/<%=exercise.slug%>"><%=exercise.name%></a><br>
+  <% @user.exercises.each do |cise| %>
+    <%= cise.name %><br>
   <%end%>
