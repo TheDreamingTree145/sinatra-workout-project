@@ -13,6 +13,10 @@ class UsersController < ApplicationController
     end
   end
 
+  get '/users' do
+    redirect '/login'
+  end
+
   get '/users/:slug' do
     if logged_in?
       @user = current_user

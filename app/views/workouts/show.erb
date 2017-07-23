@@ -5,15 +5,15 @@
 <h2>Workout Name: <%=@workout.name%></h2>
 <p>Workout Category: <%=@workout.category%></p>
 <p>Created By: <%=@workout.created_by%></p>
-<h4>Workout Exercises:</h4>
+<h4>Workout Exercises:</h4><br>
 <%@workout.exercises.each do |cise|%>
 <ul>
-  <li>Exercise Name: <%=cise.name%></li>
+  <li><h5>Exercise Name: <%=cise.name%></h5></li>
   <ul>
     <li>Exercise Category: <%=cise.category%></li>
     <li>Number of Sets: <%=cise.sets%></li>
     <li>Number of Reps: <%=cise.reps%></li>
   </ul>
-  <br><br>
+  <br>
 </ul>
 <%end%>
