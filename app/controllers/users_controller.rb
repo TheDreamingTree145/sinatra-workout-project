@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   get '/signup' do
     if logged_in?
       @user = current_user
-      flash[:create_message] = "Successfully created account!"
+      flash[:message] = "Successfully created account!"
       redirect "/users/#{@user.slug}"
     else
       erb :'/users/create_user'
@@ -23,11 +23,11 @@ class UsersController < ApplicationController
       if @user = User.find_by_slug(params[:slug])
         erb :'/users/show'
       else
-        flash[:login_message] = "You must be logged in to view your user page"
+        flash[:message] = "You must be logged in to view your user page"
         redirect '/login'
       end
     else
-      flash[:login_message] = "You must be logged in to view your user page"
+      flash[:message] = "You must be logged in to view your user page"
       redirect '/login'
     end
   end
@@ -52,10 +52,10 @@ class UsersController < ApplicationController
 
   post '/signup' do
     if User.all.find {|user| user.username == params[:username]}
-      flash[:username_message] = "Username already taken. If you already have an account please go to the login page."
+      flash[:message] = "Username already taken. If you already have an account please go to the login page."
       redirect '/signup'
     elsif User.all.find {|user| user.email == params[:email]}
-      flash[:email_message] = "Email already registered. If you already have an account please go to the login page."
+      flash[:message] = "Email already registered. If you already have an account please go to the login page."
       redirect '/signup'
     end
     @user = User.new(params)
@@ -64,8 +64,19 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       redirect "/users/#{@user.slug}"
     else
-      flash[:valid_message] = "Please make sure all fields are filled out"
+      flash[:message] = "Please make sure all fields are filled out"
       redirect '/signup'
+    end
+  end
+
+  post '/login' do
+    @user = User.find_by(username: params[:username])
+    if @user && @user.authenticate(params[:password])
+      session[:user_id] = @user.id
+      redirect "/users/#{@user.slug}"
+    else
+      flash[:message] = "Your username and/or password is incorrect"
+      redirect '/login'
     end
   end
 

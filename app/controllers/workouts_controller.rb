@@ -9,7 +9,7 @@ class WorkoutsController < ApplicationController
       @all_workouts = Workout.all
       erb :'/workouts/workouts'
     else
-      flash[:login_message] = "You must be logged in to see a list of workouts"
+      flash[:message] = "You must be logged in to see a list of workouts"
       redirect '/login'
     end
   end
@@ -20,7 +20,7 @@ class WorkoutsController < ApplicationController
       @all_exercises = Exercise.all
       erb :'/workouts/create_workout'
     else
-      flash[:login_message] = "You must be logged in to create a workout"
+      flash[:message] = "You must be logged in to create a workout"
       redirect '/login'
     end
   end
@@ -31,7 +31,7 @@ class WorkoutsController < ApplicationController
       @workout = Workout.find_by_slug(params[:slug])
       erb :'/workouts/show'
     else
-      flash[:login_message] = "Please login to view a workout"
+      flash[:message] = "Please login to view a workout"
       redirect '/login'
     end
   end
@@ -39,7 +39,7 @@ class WorkoutsController < ApplicationController
   post '/workouts' do
     @user = current_user
     if params[:exercises].nil?
-      flash[:choose_one] = "Please choose at least one exercise for the workout"
+      flash[:message] = "Please choose at least one exercise for the workout"
       redirect '/workouts/new'
     end
     @workout = Workout.new(params[:workouts])
@@ -54,10 +54,10 @@ class WorkoutsController < ApplicationController
       @workout.created_by = @user.username #do i want the object here?
       @user.save
       @workout.save
-      flash[:created_workout] = "You have successfully created a workout!"
+      flash[:message] = "You have successfully created a workout!"
       redirect "/workouts/#{@workout.slug}"
     else
-      flash[:workout_create_message] = "Please make sure all fields are filled out when creating a new workout"
+      flash[:message] = "Please make sure all fields are filled out when creating a new workout"
       redirect '/workouts/new'
     end
   end
@@ -76,16 +76,16 @@ class WorkoutsController < ApplicationController
   #  end
     @all_exercises.each do |cise|
       if cise.name.downcase == params[:exercise][:name].downcase
-        flash[:exercise_create_message] = "That exercise already exists"
+        flash[:message] = "That exercise already exists"
         redirect '/workouts/new'
       else
         @exercise = Exercise.new(params[:exercise])
         if @exercise.valid?
           @exercise.save
-          flash[:exercise_create_message] = "Successfully added exercise to database"
+          flash[:message] = "Successfully added exercise to database"
           redirect '/workouts/new'
         else
-          flash[:exercise_create_message] = "Please make sure all fields are filled out when creating a new exercise"
+          flash[:message] = "Please make sure all fields are filled out when creating a new exercise"
           redirect '/workouts/new'
         end
       end
