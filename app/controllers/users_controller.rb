@@ -42,8 +42,11 @@ class UsersController < ApplicationController
   end
 
   get '/login' do
-
-    erb :'/users/login'
+    if logged_in?
+      @user = current_user
+      redirect '/users/#{@user.slug}'
+    else
+      erb :'/users/login'
   end
 
   post '/signup' do
