@@ -5,7 +5,7 @@
   <input type="text" name="workouts[name]" value=""><br><br>
   <h4>Choose a workout category!</h4><br>
   <% WORKOUT_TYPES.each do |work|%>
-    <input id="<%=work%>" type="radio" name="workout[types]" value="<%=work%>"><%=work%></input>
+    <input id="<%=work%>" type="radio" name="workouts[category]" value="<%=work%>"><%=work%></input>
   <%end%>
   <br><br>
   <h4>Choose existing exercises to add!</h4> <%# remember need to make exercise category shown somehow %>
@@ -23,7 +23,7 @@
       <input type="text" name="exercise[reps]" value="10"><br>
       <label for="exercise[category]">Category:</label>
       <% EXERCISE_TYPES.each do |work|%>
-        <input id="<%=work%>" type="radio" name="exercise[types]" value="<%=work%>"><%=work%></input>
+        <input id="<%=work%>" type="radio" name="exercise[category]" value="<%=work%>"><%=work%></input>
       <%end%>
       <input type="submit" name="" value="Add New Exercise">
       <br>

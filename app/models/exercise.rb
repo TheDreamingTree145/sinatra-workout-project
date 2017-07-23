@@ -4,6 +4,8 @@ class Exercise < ActiveRecord::Base
   has_many :workout_exercises
   has_many :workouts, through: :workout_exercises
 
+  validates_presence_of :name, :category, :sets, :reps
+
   def slug
     name.downcase.gsub(" ", "-")
   end

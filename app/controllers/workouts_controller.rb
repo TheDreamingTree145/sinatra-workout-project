@@ -21,4 +21,11 @@ class WorkoutsController < ApplicationController
       redirect '/login'
     end
   end
+
+  post '/workouts' do
+    binding.pry
+    if logged_in?
+      @user = current_user
+    end
+  end
 end
