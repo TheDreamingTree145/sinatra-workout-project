@@ -28,6 +28,8 @@ class WorkoutsController < ApplicationController
   get '/workouts/:slug' do
     if logged_in?
       @user = current_user
+      @workout = Workout.find_by_slug(params[:slug])
+      erb :'/workouts/show'
     else
       flash[:login_message] = "Please login to view a workout"
       redirect '/login'
@@ -52,6 +54,7 @@ class WorkoutsController < ApplicationController
       @workout.created_by = @user.username #do i want the object here?
       @user.save
       @workout.save
+      flash[:created_workout] = "You have successfully created a workout!"
       redirect "/workouts/#{@workout.slug}"
     else
       flash[:workout_create_message] = "Please make sure all fields are filled out when creating a new workout"
