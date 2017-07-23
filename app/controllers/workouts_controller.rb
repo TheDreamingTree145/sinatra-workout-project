@@ -26,7 +26,12 @@ class WorkoutsController < ApplicationController
   end
 
   get '/workouts/:slug' do
-    
+    if logged_in?
+      @user = current_user
+    else
+      flash[:login_message] = "Please login to view a workout"
+      redirect '/login'
+    end
   end
 
   post '/workouts' do
@@ -36,21 +41,22 @@ class WorkoutsController < ApplicationController
       redirect '/workouts/new'
     end
     @workout = Workout.new(params[:workouts])
-    @user.workouts << @workout
-    params[:exercises].each do |id|
-      if !@user.exercises.include?(Exercise.all.find_by_id(id))
-        @user.exercises << Exercise.all.find_by_id(id)
-      end
-      @workout.exercises << Exercise.all.find_by_id(id)
-    end
-    @workout.created_by = @user.username #do i want the object here?
     if @workout.valid?
+      @user.workouts << @workout
+      params[:exercises].each do |id|
+        if !@user.exercises.include?(Exercise.all.find_by_id(id))
+          @user.exercises << Exercise.all.find_by_id(id)
+        end
+        @workout.exercises << Exercise.all.find_by_id(id)
+      end
+      @workout.created_by = @user.username #do i want the object here?
       @user.save
       @workout.save
       redirect "/workouts/#{@workout.slug}"
     else
       flash[:workout_create_message] = "Please make sure all fields are filled out when creating a new workout"
       redirect '/workouts/new'
+    end
   end
 
   post '/workouts/new/exercises' do
