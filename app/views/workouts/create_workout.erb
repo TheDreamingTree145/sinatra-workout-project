@@ -1,5 +1,5 @@
 <h2>Create a new workout!</h2>
-
+<p>If you're going to create a new exercise, do so before filling out the rest of the form!</p>
 <form class="" action="/workouts" method="post">
   <label for="workouts[name]">Name:</label>
   <input type="text" name="workouts[name]" value=""><br><br>
@@ -14,7 +14,7 @@
   <%end%>
   <br><br>
   <h4>and/or add new exercises to list</h4>
-    <form class="" action="index.html" method="post"> <%# nested form %>
+    <form class="" action="/workouts/new/exercises" method="post"> <%# nested form %>
       <label for="exercise[name]">Name:</label>
       <input type="name" name="exercise[name]" value="">
       <label for="exercise[sets]">Number of sets:</label>
