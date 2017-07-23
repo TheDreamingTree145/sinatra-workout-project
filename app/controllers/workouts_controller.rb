@@ -24,7 +24,6 @@ class WorkoutsController < ApplicationController
 
   post '/workouts' do
     @user = current_user
-    end
   end
 
   post '/workouts/new/exercises' do
