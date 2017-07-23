@@ -3,5 +3,12 @@
 
 <form action="/workouts/<%=@workout.slug%>/edit" method="post">
   <input type="hidden" id="hidden" name="_method" value="patch">
-
+  <label for="workouts[name]">Name:</label>
+  <input type="text" name="workouts[name]" value="<%=@workout.name%>">
+  <br><br>
+  <h4>Choose a workout category!</h4><br>
+  <% WORKOUT_TYPES.each do |work|%>
+    <input id="<%=work%>" type="radio" name="workouts[category]" value="<%=work%>" <%='checked' if @workout.category.include?(work)%>><%=work%></input>
+  <%end%>
+  <br><br>
 </form>
