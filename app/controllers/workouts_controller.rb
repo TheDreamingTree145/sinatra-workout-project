@@ -92,5 +92,16 @@ class WorkoutsController < ApplicationController
     end
   end
 
+  get '/workouts/:slug/edit' do
+    if logged_in?
+      @user = current_user
+      @workout = Workout.find_by_slug(params[:slug])
+      erb :'/workouts/edit'
+    else
+      flash[:message] = "Login to edit a workout"
+      redirect '/login'
+    end
+
+  end
 
 end
