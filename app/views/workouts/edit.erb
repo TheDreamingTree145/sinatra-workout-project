@@ -1,0 +1,7 @@
+<h2>Edit workout below!</h2>
+<p>Note: You may only edit a workout if you created it!</p>
+
+<form action="/workouts/<%=@workout.slug%>/edit" method="post">
+  <input type="hidden" id="hidden" name="_method" value="patch">
+
+</form>
