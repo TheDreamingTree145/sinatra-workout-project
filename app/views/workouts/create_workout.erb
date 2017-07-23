@@ -1,3 +1,7 @@
+<%if flash.has?(:exercise_create_message)%>
+<%=flash[:exercise_create_message]%>
+<%end%>
+
 <h2>Create a new workout!</h2>
 <p>If you're going to create a new exercise, do so before filling out the rest of the form!</p>
 <form class="" action="/workouts" method="post">
@@ -10,7 +14,7 @@
   <br><br>
   <h4>Choose existing exercises to add!</h4> <%# remember need to make exercise category shown somehow %>
   <%@all_exercises.each do |cise|%>
-    <input id="<%=cise.name%>" type="checkbox" name="exercises[]" value="<%=cise.id%>">
+    <input id="<%=cise.name%>" type="checkbox" name="exercises[]" value="<%=cise.id%>"><%=cise.name%></input>
   <%end%>
   <br><br>
       <input type="submit" name="" value="Create New Workout">
