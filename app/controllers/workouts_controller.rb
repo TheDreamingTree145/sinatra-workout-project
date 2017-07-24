@@ -96,13 +96,18 @@ class WorkoutsController < ApplicationController
     if logged_in?
       @user = current_user
       @workout = Workout.find_by_slug(params[:slug])
-      @all_exercises = Exercise.all 
-      erb :'/workouts/edit'
+      @all_exercises = Exercise.all
+      if @user.username == @workout.created_by
+        erb :'/workouts/edit'
+      else
+        flash[:message] = "You can only edit workouts you have created"
+        redirect "/users/#{@user.slug}"
     else
-      flash[:message] = "Login to edit a workout"
+      flash[:message] = "Login to edit or delete a workout"
       redirect '/login'
     end
-
   end
+
+
 
 end
