@@ -92,6 +92,27 @@ class WorkoutsController < ApplicationController
     end
   end
 
+  post '/workouts/edit/exercises' do
+    @user = current_user
+    @all_exercises = Exercise.all
+    @all_exercises.each do |cise|
+      if cise.name.downcase == params[:exercise][:name].downcase
+        flash[:message] = "That exercise already exists"
+        redirect '/workouts/new'
+      else
+        @exercise = Exercise.new(params[:exercise])
+        if @exercise.valid?
+          @exercise.save
+          flash[:message] = "Successfully added exercise to database"
+          redirect '/workouts/new'
+        else
+          flash[:message] = "Please make sure all fields are filled out when creating a new exercise"
+          redirect '/workouts/new'
+        end
+      end
+    end
+  end
+
   get '/workouts/:slug/edit' do
     if logged_in?
       @user = current_user
@@ -102,6 +123,7 @@ class WorkoutsController < ApplicationController
       else
         flash[:message] = "You can only edit workouts you have created"
         redirect "/users/#{@user.slug}"
+      end
     else
       flash[:message] = "Login to edit or delete a workout"
       redirect '/login'
