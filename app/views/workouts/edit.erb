@@ -40,3 +40,9 @@
     <%end%>
     <input type="submit" name="" value="Add New Exercise">
   </form>
+  <br>
+  <h4>Delete Workout</h4>
+  <form action="/workouts/<%=@workout.slug%>/delete" method="post">
+    <input type="hidden" id="hidden" name="_method" value="delete">
+    <input type="submit" name="" value="Delete Workout">
+  </form>
