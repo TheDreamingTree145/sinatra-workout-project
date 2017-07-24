@@ -1,3 +1,8 @@
+<%if flash.has?(:message)%>
+<%=flash[:message]%>
+<%end%>
+
+
 <h2>Edit workout below!</h2>
 <p>If you're going to create a new exercise to add, please do so before filling out the rest of the form!</p>
 <p>Note: You may only edit a workout if you created it!</p>
@@ -18,10 +23,11 @@
     <input id="<%=cise.name%>" type="checkbox" name="exercises[]" value="<%=cise.id%>" <%='checked' if @workout.exercises.include?(cise)%>><%=cise.name%></input>
   <%end%>
   <br><br>
-      <input type="submit" name="" value="Create New Workout">
+      <input type="submit" name="" value="Update Workout">
 </form>
 <h4>Create new exercise!</h4>
-  <form class="" action="/workouts/new/exercises" method="post"> <%# nested form %>
+  <form class="" action="/workouts/edit/exercises" method="post">
+    <input type="hidden" name="<%=@workout.slug%>">
     <label for="exercise[name]">Name:</label>
     <input type="name" name="exercise[name]" value="">
     <label for="exercise[sets]">Number of sets:</label>

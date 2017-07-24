@@ -64,7 +64,6 @@ class WorkoutsController < ApplicationController
 
   post '/workouts/new/exercises' do #not sure about
     @user = current_user
-    @all_exercises = Exercise.all
   # Necessary only on first instance
   #  if @all_exercises.empty?
   #    @exercise = Exercise.new(params[:exercise])
@@ -74,42 +73,39 @@ class WorkoutsController < ApplicationController
   #      redirect '/workouts/new'
   #    end
   #  end
-    @all_exercises.each do |cise|
+    Exercise.all.find do |cise|
       if cise.name.downcase == params[:exercise][:name].downcase
         flash[:message] = "That exercise already exists"
         redirect '/workouts/new'
-      else
-        @exercise = Exercise.new(params[:exercise])
-        if @exercise.valid?
-          @exercise.save
-          flash[:message] = "Successfully added exercise to database"
-          redirect '/workouts/new'
-        else
-          flash[:message] = "Please make sure all fields are filled out when creating a new exercise"
-          redirect '/workouts/new'
-        end
       end
+    end
+    @exercise = Exercise.new(params[:exercise])
+    if @exercise.valid?
+      @exercise.save
+      flash[:message] = "Successfully added exercise to database"
+      redirect '/workouts/new'
+    else
+      flash[:message] = "Please make sure all fields are filled out when creating a new exercise"
+      redirect '/workouts/new'
     end
   end
 
-  post '/workouts/edit/exercises' do
+  post '/workouts/edit/exercises' do #could be ugly restfullness
     @user = current_user
-    @all_exercises = Exercise.all
-    @all_exercises.each do |cise|
+    Exercise.all.find do |cise|
       if cise.name.downcase == params[:exercise][:name].downcase
         flash[:message] = "That exercise already exists"
-        redirect '/workouts/new'
-      else
-        @exercise = Exercise.new(params[:exercise])
-        if @exercise.valid?
-          @exercise.save
-          flash[:message] = "Successfully added exercise to database"
-          redirect '/workouts/new'
-        else
-          flash[:message] = "Please make sure all fields are filled out when creating a new exercise"
-          redirect '/workouts/new'
-        end
+        redirect "/workouts/#{params.keys[0]}/edit"
       end
+    end
+    @exercise = Exercise.new(params[:exercise])
+    if @exercise.valid?
+      @exercise.save
+      flash[:message] = "Successfully added exercise to database"
+      redirect "/workouts/#{params.keys[0]}/edit" #funky to get to reload right page to edit
+    else
+      flash[:message] = "Please make sure all fields are filled out when creating a new exercise"
+      redirect "/workouts/#{params.keys[0]}/edit"
     end
   end
 
@@ -130,6 +126,13 @@ class WorkoutsController < ApplicationController
     end
   end
 
+  patch '/workouts/:slug' do
+    @workout = Workout.find_by_slug(params[:slug])
+    binding.pry
+    @workout.name = params[:workout][:name] # didn't use update because of created by
+    @workout.category = params[:workout][:category]
+    binding.pry
+  end
 
 
 end
