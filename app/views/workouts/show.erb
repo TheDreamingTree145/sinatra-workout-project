@@ -2,13 +2,15 @@
 <%=flash[:message]%>
 <%end%>
 
+<h2>Enjoy <%=@user.username%>!</h2>
+
 <h2>Workout Name: <%=@workout.name%></h2>
 <p>Workout Category: <%=@workout.category%></p>
 <p>Created By: <%=@workout.created_by%></p>
 <h4>Workout Exercises:</h4><br>
 <%@workout.exercises.each do |cise|%>
 <ul>
-  <li><h5>Exercise Name: <%=cise.name%></h5></li>
+  <li><a href="/exercises/<%=cise.slug%>"><h5>Exercise Name: <%=cise.name%></h5></li></a>
   <ul>
     <li>Exercise Category: <%=cise.category%></li>
     <li>Number of Sets: <%=cise.sets%></li>
@@ -17,3 +19,8 @@
   <br>
 </ul>
 <%end%>
+
+<form action="/workouts/users/<%=@user.slug%>/add" method="post">
+  <input type="hidden" name="<%=@workout.slug%>"  id="<%=@workout%>">
+  <input type="submit" name="" value="Add Workout to My Workouts">
+</form>

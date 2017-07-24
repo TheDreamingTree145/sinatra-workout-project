@@ -1,0 +1,11 @@
+<h2>Hello, <%=@user.username%>!</h2>
+
+<h2>Exercise Name: <%=@exercise.name%></h2>
+<p>Exercise Category: <%=@exercise.category%></p>
+<%@exercise.workouts.each do |work|%>
+<ul>
+  <h5>Name: <a href="/workouts/<%=work.slug%>"><li><%=work.name%></li></a></h5>
+  <li>Category: <%=work.category%></li>
+  <li>Created By: <%=work.created_by%></li>
+</ul>
+<%end%>

@@ -132,6 +132,21 @@ class WorkoutsController < ApplicationController
     end
   end
 
+  post '/workouts/users/:slug/add' do
+    @user = current_user
+    if !@user.workouts.include?(params.keys[0])
+      @user.workouts << params.keys[0]
+      flash[:message] = "Successfully added workout!"
+      redirect "/users/#{@user.slug}"
+    else
+      flash[:message] = "You already have this workout!"
+      redirect "/workouts/#{params.keys[0]}"
+    end
+  end
+    binding.pry
+
+  end
+
   patch '/workouts/:slug' do
     @workout = Workout.find_by_slug(params[:slug])
     params[:workouts].each do |attr|
@@ -152,6 +167,7 @@ class WorkoutsController < ApplicationController
     @workout.destroy
     redirect "/users/#{@user.slug}"
   end
+
 
 
 end
