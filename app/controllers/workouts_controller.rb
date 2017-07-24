@@ -42,14 +42,20 @@ class WorkoutsController < ApplicationController
       flash[:message] = "Please choose at least one exercise for the workout"
       redirect '/workouts/new'
     end
+    Workout.all.find do |workout|
+      if workout.name.downcase == params[:workouts][:name].downcase
+        flash[:message] = "That workout name is taken. Please choose another"
+        redirect '/workouts/new'
+      end
+    end
     @workout = Workout.new(params[:workouts])
     if @workout.valid?
       @user.workouts << @workout
-      params[:exercises].each do |id|
-        if !@user.exercises.include?(Exercise.all.find_by_id(id))
-          @user.exercises << Exercise.all.find_by_id(id)
+      @workout.exercise_ids = params[:exercises]
+      @workout.exercises.each do |cise|
+        if !@user.exercises.include?(cise)
+          @user.exercises << cise
         end
-        @workout.exercises << Exercise.all.find_by_id(id)
       end
       @workout.created_by = @user.username #do i want the object here?
       @user.save
@@ -128,10 +134,16 @@ class WorkoutsController < ApplicationController
 
   patch '/workouts/:slug' do
     @workout = Workout.find_by_slug(params[:slug])
-    binding.pry
-    @workout.name = params[:workout][:name] # didn't use update because of created by
-    @workout.category = params[:workout][:category]
-    binding.pry
+    params[:workouts].each do |attr|
+      if attr.empty?
+        flash[:message] = "Please make sure all fields are filled out"
+        redirect "/workouts/#{@workout.slug}/edit"
+      end
+    end
+    @workout.update(params[:workouts])
+    @workout.exericse_ids = params[:exercises]
+    @workout.save
+    redirect "/workouts/#{@workout.slug}"
   end
 
 

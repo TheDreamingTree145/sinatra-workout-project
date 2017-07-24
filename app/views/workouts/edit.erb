@@ -8,7 +8,7 @@
 <p>Note: You may only edit a workout if you created it!</p>
 
 
-<form action="/workouts/<%=@workout.slug%>/edit" method="post">
+<form action="/workouts/<%=@workout.slug%>" method="post">
   <input type="hidden" id="hidden" name="_method" value="patch">
   <label for="workouts[name]">Name:</label>
   <input type="text" name="workouts[name]" value="<%=@workout.name%>">
