@@ -80,4 +80,12 @@ class UsersController < ApplicationController
     end
   end
 
+  post '/users/workouts/:slug/remove' do
+    @user = current_user
+    @workout = Workout.find_by_slug(params[:slug])
+    @user.workouts.delete(@workout)
+    flash[:message] = "You have removed the workout from your list"
+    redirect "/users/#{@user.slug}"
+  end
+
 end
