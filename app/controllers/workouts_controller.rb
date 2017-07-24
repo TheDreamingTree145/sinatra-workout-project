@@ -132,7 +132,7 @@ class WorkoutsController < ApplicationController
     end
   end
 
-  patch '/workouts/:slug/delete' do
+  patch '/workouts/:slug' do
     @workout = Workout.find_by_slug(params[:slug])
     params[:workouts].each do |attr|
       if attr.empty?
@@ -146,7 +146,12 @@ class WorkoutsController < ApplicationController
     redirect "/workouts/#{@workout.slug}"
   end
 
-  delete '/workouts/:slug' do
+  delete '/workouts/:slug/delete' do #don't know why I would need check again
+    @workout = Workout.find_by_slug(params[:slug])
+    @user = current_user
+    @workout.destroy
+    redirect "/users/#{@user.slug}"
+  end
 
 
 end
