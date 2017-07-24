@@ -1,10 +1,9 @@
 <h2>Hey there <%=@user.username%></h2>
 
-<p>Here is a list of all the exercise users have made!</p>
+<p>Here is a list of all the exercise users have made! Click the exercise link to see all the workouts this exercise is associated with!</p>
 
 <%@all_exercises.each do |cise|%>
 <ul>
-  <a href="/exercises/<%=cise.slug%>"><li><%=cise.name%></li></a>
-  <li><%=cise.category%></li>
+  <a href="/exercises/<%=cise.slug%>"><li><%=cise.name%>: <%=cise.category%></li></a>
 </ul>
 <%end%>
