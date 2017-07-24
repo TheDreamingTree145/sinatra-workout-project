@@ -8,13 +8,14 @@
 
 <h4>Here are your workouts!</h4>
   <% @user.workouts.each do |workout| %>
-    <a href="/workouts/<%=workout.slug%>"><%=workout.name%></a>
+  <ul>
+    <li><a href="/workouts/<%=workout.slug%>"><%=workout.name%></a></li>
+    <li><a href="/workouts/<%=workout.slug%>/edit">Edit Workout!</a></li>
+    <li>Category: <%=workout.category%></li>
     <br>
-    <a href="/workouts/<%=workout.slug%>/edit">Edit Workout!</a>
-    <br><br>
   <%end%>
   <br>
-
+  </ul>
 <h4>Here are all your exercises!</h4>
   <% @user.exercises.each do |cise| %>
     <%= cise.name %><br>
