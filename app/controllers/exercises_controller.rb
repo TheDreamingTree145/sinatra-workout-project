@@ -1,4 +1,5 @@
 class ExercisesController < ApplicationController
+  use Rack::Flash
 
   get '/exercises' do
     if logged_in?
@@ -7,6 +8,16 @@ class ExercisesController < ApplicationController
       erb :'/exercises/exercises'
     else
       flash[:message] = "You must be logged in to view the list of exercises"
+      redirect '/login'
+    end
+  end
+
+  get '/exercises/new' do
+    if logged_in?
+      @user = current_user
+      erb :'/exercises/create_exercises'
+    else
+      flash[:message] = "You must be logged in to create an exercise"
       redirect '/login'
     end
   end
@@ -22,13 +33,19 @@ class ExercisesController < ApplicationController
     end
   end
 
-  get 'exercises/new' do
-    if logged_in?
-      @user = current_user
-      erb :'/exercises/create_exercises'
+  post '/exercises' do
+    if Exercise.all.find {|cise| cise.name.downcase == params[:exercise][:name].downcase}
+        flash[:message] = "That exercise already exists"
+        redirect '/exercises/new'
+    end
+    @exercise = Exercise.new(params[:exercise])
+    if @exercise.valid?
+      @exercise.save
+      flash[:message] = "Successfully created exercise!"
+      redirect '/exercises'
     else
-      flash[:message] = "You must be logged in to create an exercise"
-      redirect '/login'
+      flash[:message] = "Please make sure all fields are filled out"
+      redirect '/exercises/new'
     end
   end
 
