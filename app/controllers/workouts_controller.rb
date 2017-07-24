@@ -143,9 +143,6 @@ class WorkoutsController < ApplicationController
       redirect "/workouts/#{params.keys[0]}"
     end
   end
-    binding.pry
-
-  end
 
   patch '/workouts/:slug' do
     @workout = Workout.find_by_slug(params[:slug])

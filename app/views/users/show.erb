@@ -6,7 +6,10 @@
 
 <h4>Here are your workouts!</h4>
   <% @user.workouts.each do |workout| %>
-    <a href="/workouts/<%=workout.slug%>"><%=workout.name%></a><br>
+    <a href="/workouts/<%=workout.slug%>"><%=workout.name%></a>
+    <br>
+    <a href="/workouts/<%=workout.slug%>/edit">Edit Workout!</a>
+    <br><br>
   <%end%>
   <br>
 
