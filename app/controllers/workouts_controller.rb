@@ -68,7 +68,7 @@ class WorkoutsController < ApplicationController
     end
   end
 
-  post '/workouts/new/exercises' do #not sure about
+  post '/workouts/exercises/new' do #not sure about
     @user = current_user
   # Necessary only on first instance
   #  if @all_exercises.empty?
@@ -96,7 +96,7 @@ class WorkoutsController < ApplicationController
     end
   end
 
-  post '/workouts/edit/exercises' do #could be ugly restfullness
+  post '/workouts/exercises/edit' do #could be ugly restfullness
     @user = current_user
     Exercise.all.find do |cise|
       if cise.name.downcase == params[:exercise][:name].downcase
@@ -132,7 +132,7 @@ class WorkoutsController < ApplicationController
     end
   end
 
-  patch '/workouts/:slug' do
+  patch '/workouts/:slug/delete' do
     @workout = Workout.find_by_slug(params[:slug])
     params[:workouts].each do |attr|
       if attr.empty?
@@ -141,10 +141,12 @@ class WorkoutsController < ApplicationController
       end
     end
     @workout.update(params[:workouts])
-    @workout.exericse_ids = params[:exercises]
+    @workout.exercise_ids = params[:exercises]
     @workout.save
     redirect "/workouts/#{@workout.slug}"
   end
+
+  delete '/workouts/:slug' do
 
 
 end
