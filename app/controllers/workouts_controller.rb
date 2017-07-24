@@ -134,8 +134,8 @@ class WorkoutsController < ApplicationController
 
   post '/workouts/users/:slug/add' do
     @user = current_user
-    if !@user.workouts.include?(params.keys[0])
-      @user.workouts << params.keys[0]
+    if !@user.workouts.include?(Workout.find_by_slug(params.keys[0]))
+      @user.workouts << Workout.find_by_slug(params.keys[0])
       flash[:message] = "Successfully added workout!"
       redirect "/users/#{@user.slug}"
     else

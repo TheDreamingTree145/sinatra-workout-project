@@ -3,8 +3,8 @@
 <%@all_workouts.each do |workout|%>
 <ul>
   <a href="/workouts/<%=workout.slug%>"><li><%=workout.name%></li></a>
-  <li><%=workout.category%></li>
-  <li><%=workout.created_by%></li>
+  <li>Category: <%=workout.category%></li>
+  <li>Created_by: <%=workout.created_by%></li>
   <br>
 </ul>
 <%end%>
