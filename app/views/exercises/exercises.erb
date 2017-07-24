@@ -1,0 +1,10 @@
+<h2>Hey there <%=@user.username%></h2>
+
+<p>Here is a list of all the exercise users have made!</p>
+
+<%@all_exercises.each do |cise|%>
+<ul>
+  <a href="/exercises/<%=cise.slug%>"><li><%=cise.name%></li></a>
+  <li><%=cise.category%></li>
+</ul>
+<%end%>
