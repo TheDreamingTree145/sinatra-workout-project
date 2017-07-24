@@ -25,7 +25,7 @@ class ExercisesController < ApplicationController
   get 'exercises/new' do
     if logged_in?
       @user = current_user
-      erb :'/exercises/create_exercise'
+      erb :'/exercises/create_exercises'
     else
       flash[:message] = "You must be logged in to create an exercise"
       redirect '/login'

@@ -1,0 +1,17 @@
+<h2>Hello, <%=@user.username%></h2>
+<h4>Create an exercise below!</h4>
+<h6>Exercises may not be edited once created!</h6>
+
+<form action="/exercises" method="post">
+  <label for="exercise[name]">Name:</label>
+  <input type="name" name="exercise[name]" value="">
+  <label for="exercise[sets]">Number of sets:</label>
+  <input type="text" name="exercise[sets]" value="3">
+  <label for="exercise[reps]">Number of reps:</label>
+  <input type="text" name="exercise[reps]" value="10"><br>
+  <label for="exercise[category]">Category:</label>
+  <% EXERCISE_TYPES.each do |work|%>
+    <input id="<%=work%>" type="radio" name="exercise[category]" value="<%=work%>"><%=work%></input>
+  <%end%>
+  <input type="submit" name="" value="Add New Exercise">
+</form>
