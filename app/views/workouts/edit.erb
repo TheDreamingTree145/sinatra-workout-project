@@ -20,7 +20,7 @@
   <br><br>
   <h4>Choose existing exercises to add!</h4> <%# remember need to make exercise category shown somehow %>
   <%@all_exercises.each do |cise|%>
-    <input id="<%=cise.name%>" type="checkbox" name="exercises[]" value="<%=cise.id%>" <%='checked' if @workout.exercises.include?(cise)%>><%=cise.name%></input>
+    <input id="<%=cise.name%>" type="checkbox" name="exercises[]" value="<%=cise.id%>" <%='checked' if @workout.exercises.include?(cise)%>><%=cise.category%>: <%=cise.name%></input>
   <%end%>
   <br><br>
       <input type="submit" name="" value="Update Workout">
