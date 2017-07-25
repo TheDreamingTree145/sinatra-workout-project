@@ -1,3 +1,5 @@
+require 'rack-flash'
+
 class ExercisesController < ApplicationController
   use Rack::Flash
 

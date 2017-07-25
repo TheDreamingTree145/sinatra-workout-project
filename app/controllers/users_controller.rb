@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   get '/signup' do
     if logged_in?
       @user = current_user
-      flash[:message] = "Successfully created account!"
+      flash[:message] = "You're already logged in!"
       redirect "/users/#{@user.slug}"
     else
       erb :'/users/create_user'
@@ -44,6 +44,7 @@ class UsersController < ApplicationController
   get '/login' do
     if logged_in?
       @user = current_user
+      flash[:message] = "You're already logged in!"
       redirect "/users/#{@user.slug}"
     else
       erb :'/users/login'
@@ -75,7 +76,7 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       redirect "/users/#{@user.slug}"
     else
-      flash[:message] = "Your username and/or password is incorrect"
+      flash[:message] = "Your username and/or password are incorrect"
       redirect '/login'
     end
   end
