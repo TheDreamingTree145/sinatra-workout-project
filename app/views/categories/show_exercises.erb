@@ -1,0 +1,9 @@
+
+
+<h2>Enjoy <%=@user.username%>!</h2>
+
+<h4>Category <%=@category%> </h4>
+<br>
+<%@associated_exercises.each do |cise|%>
+<a href="/exercises/<%=cise.slug%>"><%=cise.name%></a><br>
+<%end%>
