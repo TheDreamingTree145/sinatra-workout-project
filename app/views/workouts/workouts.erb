@@ -1,4 +1,11 @@
+<%if flash.has?(:message)%>
+  <%=flash[:message]%>
+<%end%>
 
+<h2>Hey there <%=@user.username%></h2>
+<br>
+<a href="/exercises/new">Create a new exercise!</a>
+<br><br>
 <h2>Here are all workouts users have made!</h2>
 <%@all_workouts.each do |workout|%>
 <ul>
