@@ -138,8 +138,14 @@ class WorkoutsController < ApplicationController
 
   post '/workouts/users/:slug/add' do
     @user = current_user
-    if !@user.workouts.include?(Workout.find_by_slug(params.keys[0]))
-      @user.workouts << Workout.find_by_slug(params.keys[0])
+    @workout = Workout.find_by_slug(params.keys[0])
+    if !@user.workouts.include?(@workout)
+      @user.workouts << @workout
+      @workout.exercises.each do |cise|
+        if !@user.exercises.include?(cise)
+          @user.exercises << cise
+        end
+      end
       session[:message] = "Successfully added workout!"
       redirect "/users/#{@user.slug}"
     else
