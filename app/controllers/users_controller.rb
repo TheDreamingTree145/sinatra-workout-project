@@ -53,10 +53,10 @@ class UsersController < ApplicationController
 
   post '/signup' do
     if User.all.find {|user| user.username == params[:username]}
-      flash[:message] = "Username already taken. If you already have an account please go to the login page."
+      session[:message] = "Username already taken. If you already have an account please go to the login page."
       redirect '/signup'
     elsif User.all.find {|user| user.email == params[:email]}
-      flash[:message] = "Email already registered. If you already have an account please go to the login page."
+      session[:message] = "Email already registered. If you already have an account please go to the login page."
       redirect '/signup'
     end
     @user = User.new(params)

@@ -15,6 +15,13 @@
 </head>
 <body>
   <div class="wrapper">
+    <%if flash.has?(:message)%>
+    <%=flash[:message]%>
+    <%end%>
+    <%if session.include?(:message)%>
+    <%=session[:message]%>
+    <%=session[:message] = nil%>
+    <%end%>
     <a href="/signup">Signup</a>
     <a href="/login">Login</a>
     <a href="/logout">Logout</a>
