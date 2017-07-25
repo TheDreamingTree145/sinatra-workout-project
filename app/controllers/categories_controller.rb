@@ -35,7 +35,7 @@ class CategoriesController < ApplicationController
       @user = current_user
       @category = params[:name]
       if WORKOUT_TYPES.find {|cat| cat.downcase == @category.downcase}
-        @associated_workouts = Workout.all.select {|work| cise.category == @category}
+        @associated_workouts = Workout.all.select {|work| work.category == @category}
         erb :'/categories/show_workouts'
       else
         flash[:message] = "Category not found!"
