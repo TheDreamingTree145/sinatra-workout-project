@@ -1,7 +1,7 @@
-require 'rack-flash'
+#require 'rack-flash'
 
 class ExercisesController < ApplicationController
-  use Rack::Flash
+  #use Rack::flash
 
   get '/exercises' do
     if logged_in?
@@ -9,7 +9,7 @@ class ExercisesController < ApplicationController
       @all_exercises = Exercise.all
       erb :'/exercises/exercises'
     else
-      flash[:message] = "You must be logged in to view the list of exercises"
+      session[:message] = "You must be logged in to view the list of exercises"
       redirect '/login'
     end
   end
@@ -19,7 +19,7 @@ class ExercisesController < ApplicationController
       @user = current_user
       erb :'/exercises/create_exercises'
     else
-      flash[:message] = "You must be logged in to create an exercise"
+      session[:message] = "You must be logged in to create an exercise"
       redirect '/login'
     end
   end
@@ -30,23 +30,23 @@ class ExercisesController < ApplicationController
       @exercise = Exercise.find_by_slug(params[:slug])
       erb :'/exercises/show'
     else
-      flash[:message] = "You must be logged in to view an exercise"
+      session[:message] = "You must be logged in to view an exercise"
       redirect '/login'
     end
   end
 
   post '/exercises' do
     if Exercise.all.find {|cise| cise.name.downcase == params[:exercise][:name].downcase}
-        flash[:message] = "That exercise already exists"
+        session[:message] = "That exercise already exists"
         redirect '/exercises/new'
     end
     @exercise = Exercise.new(params[:exercise])
     if @exercise.valid?
       @exercise.save
-      flash[:message] = "Successfully created exercise!"
+      session[:message] = "Successfully created exercise!"
       redirect '/exercises'
     else
-      flash[:message] = "Please make sure all fields are filled out"
+      session[:message] = "Please make sure all fields are filled out"
       redirect '/exercises/new'
     end
   end

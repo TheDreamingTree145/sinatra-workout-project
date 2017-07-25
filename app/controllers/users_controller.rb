@@ -81,7 +81,7 @@ class UsersController < ApplicationController
     end
   end
 
-  post '/users/workouts/:slug/remove' do
+  post '/users/workouts/:slug/remove' do #Restfullnes
     @user = current_user
     @workout = Workout.find_by_slug(params[:slug])
     @user.workouts.delete(@workout)
