@@ -101,7 +101,7 @@ class WorkoutsController < ApplicationController
     Exercise.all.find do |cise|
       if cise.name.downcase == params[:exercise][:name].downcase
         flash[:message] = "That exercise already exists"
-        redirect "/workouts/#{params.keys[0]}/edit"
+        redirect "/workouts/#{params.keys[0]}/edit" # Not sure why params screwed up
       end
     end
     @exercise = Exercise.new(params[:exercise])
@@ -164,7 +164,5 @@ class WorkoutsController < ApplicationController
     @workout.destroy
     redirect "/users/#{@user.slug}"
   end
-
-
 
 end
