@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   get '/signup' do
     if logged_in?
       @user = current_user
-      flash[:message] = "You're already logged in!"
+      session[:message] = "You're already logged in!"
       redirect "/users/#{@user.slug}"
     else
       erb :'/users/create_user'
@@ -23,11 +23,11 @@ class UsersController < ApplicationController
       if @user = User.find_by_slug(params[:slug])
         erb :'/users/show'
       else
-        flash[:message] = "You must be logged in to view your user page"
+        session[:message] = "You must be logged in to view your user page"
         redirect '/login'
       end
     else
-      flash[:message] = "You must be logged in to view your user page"
+      session[:message] = "You must be logged in to view your user page"
       redirect '/login'
     end
   end
@@ -65,7 +65,7 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       redirect "/users/#{@user.slug}"
     else
-      flash[:message] = "Please make sure all fields are filled out"
+      session[:message] = "Please make sure all fields are filled out"
       redirect '/signup'
     end
   end
@@ -76,7 +76,7 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       redirect "/users/#{@user.slug}"
     else
-      flash[:message] = "Your username and/or password are incorrect"
+      session[:message] = "Your username and/or password are incorrect"
       redirect '/login'
     end
   end
@@ -85,7 +85,7 @@ class UsersController < ApplicationController
     @user = current_user
     @workout = Workout.find_by_slug(params[:slug])
     @user.workouts.delete(@workout)
-    flash[:message] = "You have removed the workout from your list"
+    session[:message] = "You have removed the workout from your list"
     redirect "/users/#{@user.slug}"
   end
 

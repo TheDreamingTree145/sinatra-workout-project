@@ -15,9 +15,6 @@
 </head>
 <body>
   <div class="wrapper">
-    <%if flash.has?(:message)%>
-    <%=flash[:message]%>
-    <%end%>
     <%if session.include?(:message)%>
     <%=session[:message]%>
     <%=session[:message] = nil%>
@@ -25,9 +22,15 @@
     <a href="/signup">Signup</a>
     <a href="/login">Login</a>
     <a href="/logout">Logout</a>
+
     <% if logged_in? %>
     <% @user = current_user%>
     <a href="/users/<%=@user.slug%>">My page</a>
+    <%end%>
+    <br>
+    <%if session.include?(:message)%>
+    <%=session[:message]%>
+    <%=session[:message] = nil%>
     <%end%>
       <%= yield %>
 
