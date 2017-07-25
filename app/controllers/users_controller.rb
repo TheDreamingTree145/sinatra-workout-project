@@ -1,7 +1,7 @@
-require 'rack-flash'
+# require 'rack-flash'
 
 class UsersController < ApplicationController
-  use Rack::Flash
+  # use Rack::Flash
 
   get '/signup' do
     if logged_in?

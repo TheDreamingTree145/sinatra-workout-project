@@ -1,7 +1,7 @@
-require 'rack-flash'
+# require 'rack-flash'
 
 class WorkoutsController < ApplicationController
-  use Rack::Flash
+  # use Rack::Flash
 
   get '/workouts' do
     if logged_in?
