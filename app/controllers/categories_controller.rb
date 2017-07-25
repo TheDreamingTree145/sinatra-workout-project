@@ -30,4 +30,21 @@ class CategoriesController < ApplicationController
     end
   end
 
+  get '/categories/workouts/:name' do #restfullness
+    if logged_in?
+      @user = current_user
+      @category = params[:name]
+      if WORKOUT_TYPES.find {|cat| cat.downcase == @category.downcase}
+        @associated_workouts = Workout.all.select {|work| cise.category == @category}
+        erb :'/categories/show_workouts'
+      else
+        flash[:message] = "Category not found!"
+        redirect '/categories'
+      end
+    else
+      flash[:message] = "Please login to view this page"
+      redirect '/login'
+    end
+  end
+
 end
