@@ -1,3 +1,5 @@
+require './lib/slug_module.rb'
+
 class Exercise < ActiveRecord::Base
   has_many :user_exercises
   has_many :users, through: :user_exercises
@@ -6,11 +8,7 @@ class Exercise < ActiveRecord::Base
 
   validates_presence_of :name, :category, :sets, :reps
 
-  def slug
-    name.downcase.gsub(" ", "-")
-  end
+  include SlugHelper
+  extend SlugHelper
 
-  def self.find_by_slug(slug)
-    self.all.find {|user| user.slug == slug}
-  end
 end

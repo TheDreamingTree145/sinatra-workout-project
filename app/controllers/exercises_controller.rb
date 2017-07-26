@@ -27,8 +27,12 @@ class ExercisesController < ApplicationController
   get '/exercises/:slug' do
     if logged_in?
       @user = current_user
-      @exercise = Exercise.find_by_slug(params[:slug])
-      erb :'/exercises/show'
+      if @exercise = Exercise.find_by_slug(params[:slug])
+        erb :'/exercises/show'
+      else
+        session[:message] = "Cannot find exercise"
+        redirect "/users/#{@user.slug}"
+      end
     else
       session[:message] = "You must be logged in to view an exercise"
       redirect '/login'

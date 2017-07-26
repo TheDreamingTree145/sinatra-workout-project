@@ -1,5 +1,5 @@
 # require 'rack-flash'
-
+require './lib/slug_module.rb'
 class UsersController < ApplicationController
   # use Rack::Flash
 
