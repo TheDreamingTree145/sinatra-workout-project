@@ -102,11 +102,10 @@ class WorkoutsController < ApplicationController
 
   post '/workouts/exercises/edit' do #could be ugly restfullness
     @user = current_user
-    binding.pry
     Exercise.all.find do |cise|
       if cise.name.downcase == params[:exercise][:name].downcase
         session[:message] = "That exercise already exists"
-        redirect "/workouts/#{params.keys[0]}/edit" 
+        redirect "/workouts/#{params.keys[0]}/edit"
       end
     end
     @exercise = Exercise.new(params[:exercise])
