@@ -5,7 +5,7 @@ class WorkoutsController < ApplicationController
 
   get '/workouts' do
     if logged_in?
-      @user = current_user
+      current_user
       @all_workouts = Workout.all
       erb :'/workouts/workouts'
     else
@@ -41,36 +41,59 @@ class WorkoutsController < ApplicationController
   end
 
   post '/workouts' do
-    @user = current_user
-    if params[:exercises].nil?
-      session[:message] = "Please choose at least one exercise for the workout"
-      redirect '/workouts/new'
-    end
-    Workout.all.find do |workout|
-      if workout.name.downcase == params[:workouts][:name].downcase
-        session[:message] = "That workout name is taken. Please choose another"
-        redirect '/workouts/new'
-      end
-    end
-    @workout = Workout.new(params[:workouts])
-    if @workout.valid?
-      @user.workouts << @workout
-      @workout.exercise_ids = params[:exercises]
-      @workout.exercises.each do |cise|
-        if !@user.exercises.include?(cise)
-          @user.exercises << cise
-        end
-      end
-      @workout.created_by = @user.username #do i want the object here?
-      @user.save
-      @workout.save
-      session[:message] = "You have successfully created a workout!"
-      redirect "/workouts/#{@workout.slug}"
+    redirect to '/login' if !logged_in?
+    @workout = current_user.workouts.build(params[:workout])
+    if @workout.save
+      redirect to "/workouts/#{@workout.slug}"
     else
-      session[:message] = "Please make sure all fields are filled out when creating a new workout"
-      redirect '/workouts/new'
+      @errors = @workout.errors.full_messages.join(', ')
+      erb :'/workouts/create_workout'
     end
   end
+  #   {
+  #     woooooooooooooooooorkout: {
+  #       name: "",
+  #       categyory: '',
+  #       exercise_ids: [1,3,4],
+  #       exercise_attributes: {
+  #         name: "",
+  #         categroy: "",
+  #         sets: 1,
+  #         reps: 11
+  #       }
+  #     }
+  #   }
+  #
+  #
+  #
+  #
+  #
+  # #   @user = current_user
+  # #   if params[:exercises].nil?
+  #     session[:message] = "Please choose at least one exercise for the workout"
+  #     redirect '/workouts/new'
+  #   end
+  #   Workout.all.find do |workout|
+  #     if workout.name.downcase == params[:workouts][:name].downcase
+  #       session[:message] = "That workout name is taken. Please choose another"
+  #       redirect '/workouts/new'
+  #     end
+  #   end
+  #   @workout = Workout.new(params[:workouts])
+  #   if @workout.valid?
+  #     @user.workouts << @workout
+  #     @workout.exercise_ids = params[:exercises]
+  #
+  #     @workout.created_by = @user.username #do i want the object here?
+  #     @user.save
+  #     @workout.save
+  #     session[:message] = "You have successfully created a workout!"
+  #     redirect "/workouts/#{@workout.slug}"
+  #   else
+  #     session[:message] = "Please make sure all fields are filled out when creating a new workout"
+  #     redirect '/workouts/new'
+  #   end
+  # end
 
   post '/workouts/exercises/new' do #not sure about
     @user = current_user

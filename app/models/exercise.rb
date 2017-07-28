@@ -8,6 +8,12 @@ class Exercise < ActiveRecord::Base
 
   validates_presence_of :name, :category, :sets, :reps
 
+  @@category = ["Chest", "Arms", "Legs", "Back", "Shoulders"]
+
+  def self.category
+    @@category
+  end
+
   include SlugHelper
   extend SlugHelper
 

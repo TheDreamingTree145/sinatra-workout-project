@@ -9,9 +9,6 @@ class ApplicationController < Sinatra::Base
     set :session_secret, "password_security"
   end
 
-  WORKOUT_TYPES = ["Chest", "Arms", "Legs", "Back", "Shoulders"]
-  EXERCISE_TYPES = ["Chest", "Arms", "Legs", "Back", "Shoulders"]
-
   get "/" do
     erb :welcome
   end

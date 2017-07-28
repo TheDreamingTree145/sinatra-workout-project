@@ -11,8 +11,8 @@
   <label for="exercise[reps]">Number of reps:</label>
   <input type="text" name="exercise[reps]" value="10"><br>
   <label for="exercise[category]">Category:</label>
-  <% EXERCISE_TYPES.each do |work|%>
-    <input id="<%=work%>" type="radio" name="exercise[category]" value="<%=work%>"><%=work%></input>
+  <% Excercise.category.each do |category|%>
+    <input id="<%= exercise %>" type="radio" name="exercise[category]" value="<%= exercise %>"><%= exercise %></input>
   <%end%>
   <input type="submit" name="" value="Add New Exercise">
 </form>
