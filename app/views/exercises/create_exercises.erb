@@ -1,7 +1,9 @@
 
-<h2>Hello, <%=@user.username%></h2>
+<h2>Hello, <%= current_user.username %></h2>
 <h4>Create an exercise below!</h4>
 <h6>Exercises may not be edited once created!</h6>
+
+<%= @errors if @errors %>
 
 <form action="/exercises" method="post">
   <label for="exercise[name]">Name:</label>
@@ -11,8 +13,8 @@
   <label for="exercise[reps]">Number of reps:</label>
   <input type="text" name="exercise[reps]" value="10"><br>
   <label for="exercise[category]">Category:</label>
-  <% Excercise.category.each do |category|%>
-    <input id="<%= exercise %>" type="radio" name="exercise[category]" value="<%= exercise %>"><%= exercise %></input>
-  <%end%>
-  <input type="submit" name="" value="Add New Exercise">
+  <% Exercise.category.each do |category| %>
+    <input id="<%= category %>" type="radio" name="exercise[category]" value="<%= category %>"><%= category %></input>
+  <% end %>
+  <input type="submit" value="Add New Exercise">
 </form>

@@ -1,12 +1,12 @@
 
-<h2>Hey there <%=@user.username%></h2>
+<h2>Hello, <%= current_user.username %></h2>
 
 <a href="/exercises/new">Create a new exercise!</a>
 <br><br>
 <p>Here is a list of all the exercise users have made! Click the exercise link to see all the workouts this exercise is associated with!</p>
 
-<%@all_exercises.each do |cise|%>
+<% @all_exercises.each do |cise| %>
 <ul>
-  <a href="/exercises/<%=cise.slug%>"><li><%=cise.name%>: <%=cise.category%></li></a>
+  <a href="/exercises/<%= cise.slug %>"><li><%= cise.name %>: <%= cise.category %></li></a>
 </ul>
-<%end%>
+<% end %>

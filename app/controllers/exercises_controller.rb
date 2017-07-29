@@ -40,18 +40,18 @@ class ExercisesController < ApplicationController
   end
 
   post '/exercises' do
-    if Exercise.all.find {|cise| cise.name.downcase == params[:exercise][:name].downcase}
+    if Exercise.name_taken?(params[:exercise])
         session[:message] = "That exercise already exists"
         redirect '/exercises/new'
     end
     @exercise = Exercise.new(params[:exercise])
-    if @exercise.valid?
-      @exercise.save
+    if @exercise.save
       session[:message] = "Successfully created exercise!"
       redirect '/exercises'
     else
-      session[:message] = "Please make sure all fields are filled out"
-      redirect '/exercises/new'
+      @errors = @exercise.errors.full_messages.join(', ')
+      binding.pry
+      erb :'/exercises/create_exercises'
     end
   end
 

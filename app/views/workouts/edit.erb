@@ -1,44 +1,45 @@
 
+<h2>Hello, <%= current_user.username %></h2>
+
 <h2>Edit workout below!</h2>
 <p>If you're going to create a new exercise to add, please do so before filling out the rest of the form!</p>
 <p>Note: You may only edit a workout if you created it!</p>
 
-
-<form action="/workouts/<%=@workout.slug%>" method="post">
+<form action="/workouts/<%= @workout.slug %>" method="post">
   <input type="hidden" id="hidden" name="_method" value="patch">
   <label for="workouts[name]">Name:</label>
-  <input type="text" name="workouts[name]" value="<%=@workout.name%>">
+  <input type="text" name="workouts[name]" value="<%= @workout.name %>">
   <br><br>
   <h4>Choose a workout category!</h4><br>
-  <% WORKOUT_TYPES.each do |work|%>
-    <input id="<%=work%>" type="radio" name="workouts[category]" value="<%=work%>" <%='checked' if @workout.category.include?(work)%>><%=work%></input>
-  <%end%>
+  <% Workout.category.each do |work| %>
+    <input id="<%= work %>" type="radio" name="workouts[category]" value="<%= work %>" <%= 'checked' if @workout.category.include?(work) %>><%= work %></input>
+  <% end %>
   <br><br>
   <h4>Choose existing exercises to add!</h4> <%# remember need to make exercise category shown somehow %>
-  <%@all_exercises.each do |cise|%>
-    <input id="<%=cise.name%>" type="checkbox" name="exercises[]" value="<%=cise.id%>" <%='checked' if @workout.exercises.include?(cise)%>><%=cise.category%>: <%=cise.name%></input>&emsp;
-  <%end%>
+  <% @all_exercises.each do |cise| %>
+    <input id="<%= cise.name %>" type="checkbox" name="exercises[]" value="<%= cise.id %>" <%= 'checked' if @workout.exercises.include?(cise) %>><%= cise.category %>: <%= cise.name %></input>&emsp;
+  <% end %>
   <br><br>
-      <input type="submit" name="" value="Update Workout">
+      <input type="submit" value="Update Workout">
 </form>
 <h4>Create new exercise!</h4>
-  <form class="" action="/workouts/exercises/edit" method="post">
-    <input type="hidden" name="<%=@workout.slug%>">
+  <form action="/workouts/exercises/edit" method="post">
+    <input type="hidden" name="<%= @workout.slug %>">
     <label for="exercise[name]">Name:</label>
-    <input type="name" name="exercise[name]" value="">
+    <input type="name" name="exercise[name]">
     <label for="exercise[sets]">Number of sets:</label>
     <input type="text" name="exercise[sets]" value="3">
     <label for="exercise[reps]">Number of reps:</label>
     <input type="text" name="exercise[reps]" value="10"><br>
     <label for="exercise[category]">Category:</label>
-    <% EXERCISE_TYPES.each do |work|%>
-      <input id="<%=work%>" type="radio" name="exercise[category]" value="<%=work%>"><%=work%></input>
-    <%end%>
-    <input type="submit" name="" value="Add New Exercise">
+    <% Exercise.category.each do |category|%>
+      <input id="<%= category %>" type="radio" name="exercise[category]" value="<%= category %>"><%= category %></input>
+    <% end %>
+    <input type="submit" value="Add New Exercise">
   </form>
   <br>
   <h4>Delete Workout</h4>
-  <form action="/workouts/<%=@workout.slug%>/delete" method="post">
+  <form action="/workouts/<%= @workout.slug %>/delete" method="post">
     <input type="hidden" id="hidden" name="_method" value="delete">
-    <input type="submit" name="" value="Delete Workout">
+    <input type="submit" value="Delete Workout">
   </form>

@@ -1,23 +1,23 @@
 
 <h2>Enjoy <%= current_user.username %>!</h2>
 
-<h2>Workout Name: <%=@workout.name%></h2>
-<p>Workout Category: <%=@workout.category%></p>
-<p>Created By: <%=@workout.created_by%></p>
+<h2>Workout Name: <%= @workout.name %></h2>
+<p>Workout Category: <%= @workout.category %></p>
+<p>Created By: <%= @workout.created_by %></p>
 <h4>Workout Exercises:</h4><br>
-<%@workout.exercises.each do |cise|%>
+<% @workout.exercises.each do |cise| %>
 <ul>
-  <li><a href="/exercises/<%=cise.slug%>"><h5>Exercise Name: <%=cise.name%></h5></li></a>
+  <li><a href="/exercises/<%= cise.slug %>"><h5>Exercise Name: <%= cise.name %></h5></li></a>
   <ul>
-    <li>Exercise Category: <%=cise.category%></li>
-    <li>Number of Sets: <%=cise.sets%></li>
-    <li>Number of Reps: <%=cise.reps%></li>
+    <li>Exercise Category: <%= cise.category %></li>
+    <li>Number of Sets: <%= cise.sets %></li>
+    <li>Number of Reps: <%= cise.reps %></li>
   </ul>
   <br>
 </ul>
-<%end%>
+<% end %>
 
-<form action="/workouts/users/<%=@user.slug%>/add" method="post">
-  <input type="hidden" name="<%=@workout.slug%>"  id="<%=@workout%>">
-  <input type="submit" name="" value="Add Workout to My Workouts">
+<form action="/workouts/users/<%= @user.slug %>/add" method="post">
+  <input type="hidden" name="<%= @workout.slug %>"  id="<%= @workout %>">
+  <input type="submit" value="Add Workout to My Workouts">
 </form>

@@ -1,13 +1,13 @@
 
-<h2>Hello, <%=@user.username%>!</h2>
+<h2>Hello, <%= current_user.username %></h2>
 
-<h2>Exercise Name: <%=@exercise.name%></h2>
-<p>Exercise Category: <%=@exercise.category%></p><br>
+<h2>Exercise Name: <%= @exercise.name %></h2>
+<p>Exercise Category: <%= @exercise.category %></p><br>
 <h4>Workouts in: </h4>
-<%@exercise.workouts.each do |work|%>
+<% @exercise.workouts.each do |work|%>
 <ul>
-  <h5>Name: <a href="/workouts/<%=work.slug%>"><li><%=work.name%></li></a></h5>
-  <li>Category: <%=work.category%></li>
-  <li>Created By: <%=work.created_by%></li>
+  <h5>Name: <a href="/workouts/<%= work.slug %>"><li><%= work.name %></li></a></h5>
+  <li>Category: <%= work.category %></li>
+  <li>Created By: <%= work.created_by %></li>
 </ul>
-<%end%>
+<% end %>

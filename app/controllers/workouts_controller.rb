@@ -48,6 +48,7 @@ class WorkoutsController < ApplicationController
       redirect '/workouts/new'
     end
     if @workout.save
+      session[:message] = "Successfully created workout!"
       redirect "/workouts/#{@workout.slug}"
     else
       @errors = @workout.errors.full_messages.join(', ')

@@ -1,8 +1,8 @@
 
-<h2>Enjoy <%=@user.username%>!</h2>
+<h2>Hello, <%= current_user.username %></h2>
 
-<h4>Category <%=@category%> </h4>
+<h4>Category <%= @category %></h4>
 <br>
-<%@associated_workouts.each do |work|%>
-<a href="/workouts/<%=work.slug%>"><%=work.name%></a><br>
-<%end%>
+<% @associated_workouts.each do |work| %>
+<a href="/workouts/<%= work.slug %>"><%= work.name %></a><br>
+<% end %>

@@ -1,6 +1,6 @@
 
 
-<h2>Welcome, <%= current_user.username %></h2>
+<h2>Hello, <%= current_user.username %></h2>
 
 <h3>Create a new workout <a href="/workouts/new">here!</a></h3>
 <h3>Create a new exercise <a href="/exercises/new">here!</a></h3>
@@ -14,7 +14,7 @@
     <li><a href="/workouts/<%= workout.slug %>"><%= workout.name %></a></li>
     <li><a href="/workouts/<%= workout.slug %>/edit">Edit Workout!</a></li>
     <li>Category: <%= workout.category %></li>
-    <form class="" action="/users/workouts/<%= workout.slug %>/remove" method="post">
+    <form action="/users/workouts/<%= workout.slug %>/remove" method="post">
       <input type="hidden" name="<%= workout.slug %>">
       <input type="submit" value="Remove Workout">
     </form>
@@ -25,4 +25,4 @@
 <h4>Here are all your exercises!</h4>
   <% current_user.exercises.each do |cise| %>
     <a href="/exercises/<%= cise.slug %>"><%= cise.name %></a><br>
-  <%end%>
+  <% end %>

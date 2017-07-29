@@ -10,11 +10,11 @@ class Exercise < ActiveRecord::Base
 
   @@category = ["Chest", "Arms", "Legs", "Back", "Shoulders"]
 
+  include SlugHelper
+  extend SlugHelper
+
   def self.category
     @@category
   end
-
-  include SlugHelper
-  extend SlugHelper
 
 end

@@ -1,12 +1,12 @@
 
-<h2>Hello, <%=@user.username%></h2>
+<h2>Hello, <%= current_user.username %></h2>
 
 <h4>Workout Categories</h4>
-<% WORKOUT_TYPES.each do |category| %>
-  <a href="/categories/workouts/<%=category%>"><%=category%></a>
-<%end%>
+<% Workout.category.each do |category| %>
+  <a href="/categories/workouts/<%= category %>"><%= category %></a>
+<% end %>
 <br><br>
 <h4>Exercise Categories</h4>
-<% EXERCISE_TYPES.each do |category| %>
-  <a href="/categories/exercises/<%=category%>"><%=category%></a>
-<%end%>
+<% Exercise.category.each do |category| %>
+  <a href="/categories/exercises/<%= category %>"><%= category %></a>
+<% end %>
