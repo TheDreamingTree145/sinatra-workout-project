@@ -10,6 +10,9 @@ class Workout < ActiveRecord::Base
 
   @@category = ["Chest", "Arms", "Legs", "Back", "Shoulders"]
 
+  include SlugHelper
+  extend SlugHelper
+
   def self.category
     @@category
   end
@@ -24,7 +27,8 @@ class Workout < ActiveRecord::Base
     end
   end
 
-  include SlugHelper
-  extend SlugHelper
+  def exercise_check
+    self.exercises.empty?
+  end
 
 end

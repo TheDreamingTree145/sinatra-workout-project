@@ -41,13 +41,14 @@ class WorkoutsController < ApplicationController
 
   post '/workouts' do
     redirect to '/login' if !logged_in?
-    binding.pry
     exercise_created?(params[:workout])
-    binding.pry
     @workout = current_user.workouts.build(params[:workout])
-    binding.pry
+    if @workout.exercise_check
+      session[:message] = "Please select at least one exercise"
+      redirect '/workouts/new'
+    end
     if @workout.save
-      redirect to "/workouts/#{@workout.slug}"
+      redirect "/workouts/#{@workout.slug}"
     else
       @errors = @workout.errors.full_messages.join(', ')
       binding.pry

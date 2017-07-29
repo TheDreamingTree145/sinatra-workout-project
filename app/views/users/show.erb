@@ -1,6 +1,6 @@
 
 
-<h2>Welcome, <%=@user.username%></h2>
+<h2>Welcome, <%= current_user.username %></h2>
 
 <h3>Create a new workout <a href="/workouts/new">here!</a></h3>
 <h3>Create a new exercise <a href="/exercises/new">here!</a></h3>
@@ -9,20 +9,20 @@
 <h3>View all exercises <a href="/exercises">here!</a></h3>
 
 <h4>Here are your workouts!</h4>
-  <% @user.workouts.each do |workout| %>
+  <% current_user.workouts.each do |workout| %>
   <ul>
-    <li><a href="/workouts/<%=workout.slug%>"><%=workout.name%></a></li>
-    <li><a href="/workouts/<%=workout.slug%>/edit">Edit Workout!</a></li>
-    <li>Category: <%=workout.category%></li>
-    <form class="" action="/users/workouts/<%=workout.slug%>/remove" method="post">
-      <input type="hidden" name="<%=workout.slug%>" value="">
-      <input type="submit" name="" value="Remove Workout">
+    <li><a href="/workouts/<%= workout.slug %>"><%= workout.name %></a></li>
+    <li><a href="/workouts/<%= workout.slug %>/edit">Edit Workout!</a></li>
+    <li>Category: <%= workout.category %></li>
+    <form class="" action="/users/workouts/<%= workout.slug %>/remove" method="post">
+      <input type="hidden" name="<%= workout.slug %>">
+      <input type="submit" value="Remove Workout">
     </form>
     <br>
-  <%end%>
   <br>
+  <% end %>
   </ul>
 <h4>Here are all your exercises!</h4>
-  <% @user.exercises.each do |cise| %>
-    <a href="/exercises/<%=cise.slug%>"><%=cise.name%></a><br>
+  <% current_user.exercises.each do |cise| %>
+    <a href="/exercises/<%= cise.slug %>"><%= cise.name %></a><br>
   <%end%>
