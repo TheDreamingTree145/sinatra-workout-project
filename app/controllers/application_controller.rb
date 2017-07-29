@@ -22,6 +22,12 @@ class ApplicationController < Sinatra::Base
       User.find(session[:user_id])
     end
 
+    def exercise_created?(workout_hash)
+      if workout_hash[:exercise_attributes].values.include?("")
+        workout_hash.delete("exercise_attributes")
+      end
+    end
+
   end
 
 end

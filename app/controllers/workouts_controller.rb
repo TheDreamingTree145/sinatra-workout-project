@@ -3,7 +3,7 @@
 class WorkoutsController < ApplicationController
   # use Rack::Flash
 
-  get '/workouts' do
+  get '/workouts' do #current_user done
     if logged_in?
       current_user
       @all_workouts = Workout.all
@@ -14,9 +14,8 @@ class WorkoutsController < ApplicationController
     end
   end
 
-  get '/workouts/new' do
+  get '/workouts/new' do #current_user done
     if logged_in?
-      @user = current_user
       @all_exercises = Exercise.all
       erb :'/workouts/create_workout'
     else
@@ -42,11 +41,16 @@ class WorkoutsController < ApplicationController
 
   post '/workouts' do
     redirect to '/login' if !logged_in?
+    binding.pry
+    exercise_created?(params[:workout])
+    binding.pry
     @workout = current_user.workouts.build(params[:workout])
+    binding.pry
     if @workout.save
       redirect to "/workouts/#{@workout.slug}"
     else
       @errors = @workout.errors.full_messages.join(', ')
+      binding.pry
       erb :'/workouts/create_workout'
     end
   end
