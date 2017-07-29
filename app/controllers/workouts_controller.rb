@@ -5,7 +5,6 @@ class WorkoutsController < ApplicationController
 
   get '/workouts' do #current_user done
     if logged_in?
-      current_user
       @all_workouts = Workout.all
       erb :'/workouts/workouts'
     else
@@ -42,17 +41,17 @@ class WorkoutsController < ApplicationController
   post '/workouts' do
     redirect to '/login' if !logged_in?
     exercise_created?(params[:workout])
-    @workout = current_user.workouts.build(params[:workout])
+    @workout = Workout.new(params[:workout]) # couldn't get build to associate the damn artist
     if @workout.exercise_check
       session[:message] = "Please select at least one exercise"
       redirect '/workouts/new'
     end
     if @workout.save
+      current_user.workouts << @workouts
       session[:message] = "Successfully created workout!"
       redirect "/workouts/#{@workout.slug}"
     else
       @errors = @workout.errors.full_messages.join(', ')
-      binding.pry
       erb :'/workouts/create_workout'
     end
   end

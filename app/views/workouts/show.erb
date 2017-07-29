@@ -17,7 +17,7 @@
 </ul>
 <% end %>
 
-<form action="/workouts/users/<%= @user.slug %>/add" method="post">
+<form action="/workouts/users/<%= current_user.slug %>/add" method="post">
   <input type="hidden" name="<%= @workout.slug %>"  id="<%= @workout %>">
   <input type="submit" value="Add Workout to My Workouts">
 </form>

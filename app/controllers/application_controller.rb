@@ -19,7 +19,7 @@ class ApplicationController < Sinatra::Base
     end
 
     def current_user
-      @user = User.find(session[:user_id])
+      User.find(session[:user_id])
     end
 
     def exercise_created?(workout_hash)
