@@ -10,7 +10,7 @@ module SlugHelper
 
   def name_taken?(params)
     !!self.all.find do |instance|
-      instance.name.downcase == params[:name].downcase
+      instance.name.downcase.strip == params[:name].downcase.strip
     end
   end
 

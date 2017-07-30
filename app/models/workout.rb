@@ -21,7 +21,7 @@ class Workout < ActiveRecord::Base
     self.exercises.build(exercise_attributes)
   end
 
-  def exercise_ids=(exercise_ids)
+  def exercise_ids=(exercise_ids) #yuck
     exercise_ids.each do |id|
       self.exercises << Exercise.find_by_id(id)
     end

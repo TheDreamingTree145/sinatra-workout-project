@@ -15,4 +15,12 @@ class User < ActiveRecord::Base
     username.downcase.gsub(" ", "-")
   end
 
+  def exercise_ids=(exercise_ids) # ???
+    exercise_ids.each do |id|
+      if !self.exercises.include?(Exercise.find_by_id(id))
+        self.exercises << Exercise.find_by_id(id)
+      end
+    end
+  end
+
 end

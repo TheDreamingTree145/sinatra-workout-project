@@ -25,7 +25,6 @@ class WorkoutsController < ApplicationController
 
   get '/workouts/:slug' do
     if logged_in?
-      @user = current_user
       if @workout = Workout.find_by_slug(params[:slug])
         erb :'/workouts/show'
       else
@@ -38,16 +37,26 @@ class WorkoutsController < ApplicationController
     end
   end
 
+  # I believe one of my big problems are that my associations are messed up or incorrect.
+
   post '/workouts' do
     redirect to '/login' if !logged_in?
     exercise_created?(params[:workout])
-    @workout = Workout.new(params[:workout]) # couldn't get build to associate the damn artist
+    @workout = current_user.workouts.build(params[:workout])
+    # couldn't get build to associate the damn artist
+    if Workout.name_taken?(params[:workout]) || (Exercise.name_taken?(params[:workout][:exercise_attributes]) unless params[:workout][:exercise_attributes].nil?)
+      session[:message] = "Workout name or exercise taken"
+      redirect '/workouts/new'
+    end
     if @workout.exercise_check
       session[:message] = "Please select at least one exercise"
       redirect '/workouts/new'
     end
     if @workout.save
-      current_user.workouts << @workouts
+      current_user.workouts << @workout #build not associating
+      current_user.exercise_ids=(@workout.exercise_ids)
+      binding.pry
+      current_user.exercise_ids(@workout)
       session[:message] = "Successfully created workout!"
       redirect "/workouts/#{@workout.slug}"
     else
@@ -99,34 +108,6 @@ class WorkoutsController < ApplicationController
   #     redirect '/workouts/new'
   #   end
   # end
-
-  post '/workouts/exercises/new' do #not sure about
-    @user = current_user
-  # Necessary only on first instance
-  #  if @all_exercises.empty?
-  #    @exercise = Exercise.new(params[:exercise])
-  #    if @exercise.valid?
-  #      @exercise.save
-  #      flash[:exercise_create_message] = "Successfully added exercise to database"
-  #      redirect '/workouts/new'
-  #    end
-  #  end
-    Exercise.all.find do |cise|
-      if cise.name.downcase == params[:exercise][:name].downcase
-        session[:message] = "That exercise already exists"
-        redirect '/workouts/new'
-      end
-    end
-    @exercise = Exercise.new(params[:exercise])
-    if @exercise.valid?
-      @exercise.save
-      session[:message] = "Successfully added exercise to database"
-      redirect '/workouts/new'
-    else
-      session[:message] = "Please make sure all fields are filled out when creating a new exercise"
-      redirect '/workouts/new'
-    end
-  end
 
   post '/workouts/exercises/edit' do #could be ugly restfullness
     @user = current_user
