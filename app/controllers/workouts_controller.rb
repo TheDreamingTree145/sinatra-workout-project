@@ -41,7 +41,7 @@ class WorkoutsController < ApplicationController
 
   post '/workouts' do
     redirect to '/login' if !logged_in?
-    exercise_created?(params[:workout])
+    exercise_created?(params[:workout]) #check if new exercise created
     @workout = current_user.workouts.build(params[:workout])
     # couldn't get build to associate the damn artist
     if Workout.name_taken?(params[:workout]) || (Exercise.name_taken?(params[:workout][:exercise_attributes]) unless params[:workout][:exercise_attributes].nil?)
@@ -56,7 +56,6 @@ class WorkoutsController < ApplicationController
       current_user.workouts << @workout #build not associating
       current_user.exercise_ids=(@workout.exercise_ids)
       binding.pry
-      current_user.exercise_ids(@workout)
       session[:message] = "Successfully created workout!"
       redirect "/workouts/#{@workout.slug}"
     else
