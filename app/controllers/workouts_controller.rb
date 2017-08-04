@@ -27,6 +27,7 @@ class WorkoutsController < ApplicationController
   get '/workouts/:slug' do
     if logged_in?
       if current_workout
+        binding.pry
         erb :'/workouts/show'
       else
         session[:message] = "Could not find workout"
@@ -43,62 +44,18 @@ class WorkoutsController < ApplicationController
   post '/workouts' do
     redirect to '/login' if !logged_in?
     exercise_created?(params[:workout]) #check if new exercise created
-    current_user.workouts.build(params[:workout])
+    @workout = current_user.workouts.build(params[:workout])
     # couldn't get build to associate the damn artist
-    if current_workout.valid? && !current_workout.exercises.empty?
-      current_workout.save
-      current_user.workouts << current_workout #build not associating
+    if @workout.valid? && !@workout.exercises.empty?
+      @workout.save
+      binding.pry
       session[:message] = "Successfully created workout!"
-      redirect "/workouts/#{current_workout.slug}"
+      redirect "/workouts/#{@workout.slug}"
     else
-      @errors = current_workout.errors.full_messages.join(', ')
+      @errors = @workout.errors.full_messages.join(', ')
       erb :'/workouts/create_workout'
     end
   end
-  #   {
-  #     woooooooooooooooooorkout: {
-  #       name: "",
-  #       categyory: '',
-  #       exercise_ids: [1,3,4],
-  #       exercise_attributes: {
-  #         name: "",
-  #         categroy: "",
-  #         sets: 1,
-  #         reps: 11
-  #       }
-  #     }
-  #   }
-  #
-  #
-  #
-  #
-  #
-  # #   @user = current_user
-  # #   if params[:exercises].nil?
-  #     session[:message] = "Please choose at least one exercise for the workout"
-  #     redirect '/workouts/new'
-  #   end
-  #   Workout.all.find do |workout|
-  #     if workout.name.downcase == params[:workouts][:name].downcase
-  #       session[:message] = "That workout name is taken. Please choose another"
-  #       redirect '/workouts/new'
-  #     end
-  #   end
-  #   @workout = Workout.new(params[:workouts])
-  #   if @workout.valid?
-  #     @user.workouts << @workout
-  #     @workout.exercise_ids = params[:exercises]
-  #
-  #     @workout.created_by = @user.username #do i want the object here?
-  #     @user.save
-  #     @workout.save
-  #     session[:message] = "You have successfully created a workout!"
-  #     redirect "/workouts/#{@workout.slug}"
-  #   else
-  #     session[:message] = "Please make sure all fields are filled out when creating a new workout"
-  #     redirect '/workouts/new'
-  #   end
-  # end
 
   get '/workouts/:slug/edit' do
     if logged_in?
