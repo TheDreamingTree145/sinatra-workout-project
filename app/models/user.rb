@@ -7,7 +7,9 @@ class User < ActiveRecord::Base
   has_many :exercises, through: :user_exercises
 
   has_secure_password
-  validates_presence_of :username, :email, :password
+  validates :username, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: true
+  validates :password, presence: true
 
   extend SlugHelper
 
@@ -15,11 +17,9 @@ class User < ActiveRecord::Base
     username.downcase.gsub(" ", "-")
   end
 
-  def exercise_ids=(exercise_ids) # ???
-    exercise_ids.each do |id|
-      if !self.exercises.include?(Exercise.find_by_id(id))
-        self.exercises << Exercise.find_by_id(id)
-      end
+  def add_workout(workout)
+    if !self.workouts.include?(workout)
+      self.workouts << workout
     end
   end
 

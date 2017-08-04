@@ -5,10 +5,10 @@ class ExercisesController < ApplicationController
 
   get '/exercises' do
     if logged_in?
-      @user = current_user
       @all_exercises = Exercise.all
       erb :'/exercises/exercises'
     else
+      binding.pry
       session[:message] = "You must be logged in to view the list of exercises"
       redirect '/login'
     end
@@ -16,7 +16,6 @@ class ExercisesController < ApplicationController
 
   get '/exercises/new' do
     if logged_in?
-      @user = current_user
       erb :'/exercises/create_exercises'
     else
       session[:message] = "You must be logged in to create an exercise"
@@ -26,12 +25,11 @@ class ExercisesController < ApplicationController
 
   get '/exercises/:slug' do
     if logged_in?
-      @user = current_user
-      if @exercise = Exercise.find_by_slug(params[:slug])
+      if current_exercise 
         erb :'/exercises/show'
       else
         session[:message] = "Cannot find exercise"
-        redirect "/users/#{@user.slug}"
+        redirect "/users/#{current_user.slug}"
       end
     else
       session[:message] = "You must be logged in to view an exercise"
@@ -40,17 +38,13 @@ class ExercisesController < ApplicationController
   end
 
   post '/exercises' do
-    if Exercise.name_taken?(params[:exercise])
-        session[:message] = "That exercise already exists"
-        redirect '/exercises/new'
-    end
     @exercise = Exercise.new(params[:exercise])
-    if @exercise.save
+    if @exercise.valid?
+      @exercise.save
       session[:message] = "Successfully created exercise!"
       redirect '/exercises'
     else
       @errors = @exercise.errors.full_messages.join(', ')
-      binding.pry
       erb :'/exercises/create_exercises'
     end
   end

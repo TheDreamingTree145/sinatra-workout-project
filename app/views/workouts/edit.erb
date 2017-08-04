@@ -3,19 +3,19 @@
 
 <h2>Edit workout below!</h2>
 
-<form action="/workouts/<%= @workout.slug %>" method="post">
+<form action="/workouts/<%= current_workout.slug %>" method="post">
   <input type="hidden" id="hidden" name="_method" value="patch">
-  <label for="workouts[name]">Name:</label>
-  <input type="text" name="workouts[name]" value="<%= @workout.name %>">
+  <label for="workout[name]">Name:</label>
+  <input type="text" name="workout[name]" value="<%= current_workout.name %>">
   <br><br>
   <h4>Choose a workout category!</h4><br>
-  <% Workout.category.each do |work| %>
-    <input id="<%= work %>" type="radio" name="workouts[category]" value="<%= work %>" <%= 'checked' if @workout.category.include?(work) %>><%= work %></input>
+  <% Workout.category.each do |category| %>
+    <input id="<%= category %>" type="radio" name="workout[category]" value="<%= category %>" <%= 'checked' if current_workout.category.include?(category) %>><%= category %></input>
   <% end %>
   <br><br>
-  <h4>Choose existing exercises to add!</h4> <%# remember need to make exercise category shown somehow %>
-  <% @all_exercises.each do |cise| %>
-    <input id="<%= cise.name %>" type="checkbox" name="exercises[]" value="<%= cise.id %>" <%= 'checked' if @workout.exercises.include?(cise) %>><%= cise.category %>: <%= cise.name %></input>&emsp;
+  <h4>Choose existing exercises to add!</h4>
+  <% @all_exercises.each do |exercise| %>
+    <input id="<%= exercise.name %>" type="checkbox" name="workout[exercise_ids][]" value="<%= exercise.id %>" <%= 'checked' if current_workout.exercises.include?(exercise) %>><%= exercise.category %>: <%= exercise.name %></input>&emsp;
   <% end %>
   <h4>Create new exercise!</h4>
     <label for="workout[exercise_attributes][name]">Name:</label>
@@ -34,7 +34,7 @@
 
   <br>
   <h4>Delete Workout</h4>
-  <form action="/workouts/<%= @workout.slug %>/delete" method="post">
+  <form action="/workouts/<%= current_workout.slug %>/delete" method="post">
     <input type="hidden" id="hidden" name="_method" value="delete">
     <input type="submit" value="Delete Workout">
   </form>

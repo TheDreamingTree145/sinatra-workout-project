@@ -6,7 +6,10 @@ class Exercise < ActiveRecord::Base
   has_many :workout_exercises
   has_many :workouts, through: :workout_exercises
 
-  validates_presence_of :name, :category, :sets, :reps
+  validates :name, presence: true, uniqueness: true
+  validates :category, presence: true
+  validates :sets, presence: true
+  validates :reps, presence: true
 
   @@category = ["Chest", "Arms", "Legs", "Back", "Shoulders"]
 

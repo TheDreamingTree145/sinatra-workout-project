@@ -5,9 +5,8 @@ class UsersController < ApplicationController
 
   get '/signup' do
     if logged_in?
-      @user = current_user
       session[:message] = "You're already logged in!"
-      redirect "/users/#{@user.slug}"
+      redirect "/users/#{current_user.slug}"
     else
       erb :'/users/create_user'
     end
@@ -19,8 +18,9 @@ class UsersController < ApplicationController
 
   get '/users/:slug' do
     if logged_in?
-      @user = current_user
-      if @user = User.find_by_slug(params[:slug])
+      current_user #MAKING ME CALL SELF or current_user is nil??? Allows people to view other peoples show page
+      binding.pry
+      if current_user = User.find_by_slug(params[:slug])
         erb :'/users/show'
       else
         session[:message] = "You must be logged in to view your user page"
@@ -43,50 +43,40 @@ class UsersController < ApplicationController
 
   get '/login' do
     if logged_in?
-      @user = current_user
       session[:message] = "You're already logged in!"
-      redirect "/users/#{@user.slug}"
+      redirect "/users/#{current_user.slug}"
     else
       erb :'/users/login'
     end
   end
 
   post '/signup' do
-    if User.all.find {|user| user.username == params[:username]}
-      session[:message] = "Username already taken. If you already have an account please go to the login page."
-      redirect '/signup'
-    elsif User.all.find {|user| user.email == params[:email]}
-      session[:message] = "Email already registered. If you already have an account please go to the login page."
-      redirect '/signup'
-    end
     @user = User.new(params)
     if @user.valid?
       @user.save
       session[:user_id] = @user.id
-      redirect "/users/#{@user.slug}"
+      redirect "/users/#{current_user.slug}"
     else
-      session[:message] = "Please make sure all fields are filled out"
-      redirect '/signup'
+      @errors = @user.errors.full_messages.join(', ')
+      erb :'/users/create_user'
     end
   end
 
-  post '/login' do
+  post '/login' do #errors for nilclass
     @user = User.find_by(username: params[:username])
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
-      redirect "/users/#{@user.slug}"
+      redirect "/users/#{current_user.slug}"
     else
       session[:message] = "Your username and/or password are incorrect"
       redirect '/login'
     end
   end
 
-  post '/users/workouts/:slug/remove' do #Restfullnes
-    @user = current_user
-    @workout = Workout.find_by_slug(params[:slug])
-    @user.workouts.delete(@workout)
+  post '/users/:slug/remove' do #Restfullnes
+    current_user.workouts.delete(current_workout)
     session[:message] = "You have removed the workout from your list"
-    redirect "/users/#{@user.slug}"
+    redirect "/users/#{current_user.slug}"
   end
 
 end

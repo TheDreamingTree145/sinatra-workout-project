@@ -15,6 +15,7 @@ class WorkoutsController < ApplicationController
 
   get '/workouts/new' do #current_user done
     if logged_in?
+      binding.pry
       @all_exercises = Exercise.all
       erb :'/workouts/create_workout'
     else
@@ -25,7 +26,7 @@ class WorkoutsController < ApplicationController
 
   get '/workouts/:slug' do
     if logged_in?
-      if @workout = Workout.find_by_slug(params[:slug])
+      if current_workout
         erb :'/workouts/show'
       else
         session[:message] = "Could not find workout"
@@ -42,24 +43,15 @@ class WorkoutsController < ApplicationController
   post '/workouts' do
     redirect to '/login' if !logged_in?
     exercise_created?(params[:workout]) #check if new exercise created
-    @workout = current_user.workouts.build(params[:workout])
+    current_user.workouts.build(params[:workout])
     # couldn't get build to associate the damn artist
-    if Workout.name_taken?(params[:workout]) || (Exercise.name_taken?(params[:workout][:exercise_attributes]) unless params[:workout][:exercise_attributes].nil?)
-      session[:message] = "Workout name or exercise taken"
-      redirect '/workouts/new'
-    end
-    if @workout.exercise_check
-      session[:message] = "Please select at least one exercise"
-      redirect '/workouts/new'
-    end
-    if @workout.save
-      current_user.workouts << @workout #build not associating
-      current_user.exercise_ids=(@workout.exercise_ids)
-      binding.pry
+    if current_workout.valid? && !current_workout.exercises.empty?
+      current_workout.save
+      current_user.workouts << current_workout #build not associating
       session[:message] = "Successfully created workout!"
-      redirect "/workouts/#{@workout.slug}"
+      redirect "/workouts/#{current_workout.slug}"
     else
-      @errors = @workout.errors.full_messages.join(', ')
+      @errors = current_workout.errors.full_messages.join(', ')
       erb :'/workouts/create_workout'
     end
   end
@@ -108,35 +100,14 @@ class WorkoutsController < ApplicationController
   #   end
   # end
 
-  post '/workouts/exercises/edit' do #could be ugly restfullness
-    @user = current_user
-    Exercise.all.find do |cise|
-      if cise.name.downcase == params[:exercise][:name].downcase
-        session[:message] = "That exercise already exists"
-        redirect "/workouts/#{params.keys[0]}/edit"
-      end
-    end
-    @exercise = Exercise.new(params[:exercise])
-    if @exercise.valid?
-      @exercise.save
-      session[:message] = "Successfully added exercise to database"
-      redirect "/workouts/#{params.keys[0]}/edit" #funky to get to reload right page to edit
-    else
-      session[:message] = "Please make sure all fields are filled out when creating a new exercise"
-      redirect "/workouts/#{params.keys[0]}/edit"
-    end
-  end
-
   get '/workouts/:slug/edit' do
     if logged_in?
-      @user = current_user
-      @workout = Workout.find_by_slug(params[:slug])
       @all_exercises = Exercise.all
-      if @user.username == @workout.created_by
+      if current_user.username == current_workout.created_by
         erb :'/workouts/edit'
       else
         session[:message] = "You can only edit workouts you have created"
-        redirect "/users/#{@user.slug}"
+        redirect "/users/#{current_user.slug}"
       end
     else
       session[:message] = "Login to edit or delete a workout"
@@ -144,43 +115,28 @@ class WorkoutsController < ApplicationController
     end
   end
 
-  post '/workouts/users/:slug/add' do
-    @user = current_user
-    @workout = Workout.find_by_slug(params.keys[0])
-    if !@user.workouts.include?(@workout)
-      @user.workouts << @workout
-      @workout.exercises.each do |cise|
-        if !@user.exercises.include?(cise)
-          @user.exercises << cise
-        end
-      end
+  post '/workouts/:slug/add' do
+    if current_user.add_workout(current_workout)
       session[:message] = "Successfully added workout!"
-      redirect "/users/#{@user.slug}"
+      redirect "/workouts/#{current_workout.slug}"
     else
       session[:message] = "You already have this workout!"
-      redirect "/workouts/#{params.keys[0]}"
+      redirect "/workouts/#{current_workout.slug}"
     end
   end
 
-  patch '/workouts/:slug' do
-    @workout = Workout.find_by_slug(params[:slug])
-    params[:workouts].each do |attr|
-      if attr.empty?
-        session[:message] = "Please make sure all fields are filled out"
-        redirect "/workouts/#{@workout.slug}/edit"
-      end
-    end
-    @workout.update(params[:workouts])
-    @workout.exercise_ids = params[:exercises]
-    @workout.save
-    redirect "/workouts/#{@workout.slug}"
+  # editing a workout add exercises fine, but doesn't remove them if they are unchecked.. Fricked up here.
+
+  patch '/workouts/:slug' do #not updating ids
+    exercise_created?(params[:workout])
+    current_workout.update(params[:workout])
+    current_workout.exercise_ids = params[:workout][:exercise_ids]
+    redirect "/workouts/#{current_workout.slug}"
   end
 
   delete '/workouts/:slug/delete' do #don't know why I would need check again
-    @workout = Workout.find_by_slug(params[:slug])
-    @user = current_user
-    @workout.destroy
-    redirect "/users/#{@user.slug}"
+    current_workout.destroy
+    redirect "/users/#{current_user.slug}"
   end
 
 end

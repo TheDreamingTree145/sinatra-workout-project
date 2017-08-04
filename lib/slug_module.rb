@@ -8,10 +8,4 @@ module SlugHelper
     self.all.find {|name| name.slug == slug}
   end
 
-  def name_taken?(params)
-    !!self.all.find do |instance|
-      instance.name.downcase.strip == params[:name].downcase.strip
-    end
-  end
-
 end
