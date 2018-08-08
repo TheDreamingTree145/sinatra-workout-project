@@ -27,10 +27,13 @@ class WorkoutsController < ApplicationController
     if logged_in?
 <<<<<<< HEAD
       if current_workout
+<<<<<<< HEAD
         binding.pry
 =======
       if @workout = Workout.find_by_slug(params[:slug])
 >>>>>>> parent of d192a91... uhh lots of changes
+=======
+>>>>>>> parent of cf064c9... reset database
         erb :'/workouts/show'
       else
         session[:message] = "Could not find workout"
@@ -47,8 +50,9 @@ class WorkoutsController < ApplicationController
   post '/workouts' do
     redirect to '/login' if !logged_in?
     exercise_created?(params[:workout]) #check if new exercise created
-    @workout = current_user.workouts.build(params[:workout])
+    current_user.workouts.build(params[:workout])
     # couldn't get build to associate the damn artist
+<<<<<<< HEAD
 <<<<<<< HEAD
     if @workout.valid? && !@workout.exercises.empty?
       @workout.save
@@ -66,13 +70,62 @@ class WorkoutsController < ApplicationController
       current_user.exercise_ids=(@workout.exercise_ids)
 >>>>>>> parent of d192a91... uhh lots of changes
       binding.pry
+=======
+    if current_workout.valid? && !current_workout.exercises.empty?
+      current_workout.save
+      current_user.workouts << current_workout #build not associating
+>>>>>>> parent of cf064c9... reset database
       session[:message] = "Successfully created workout!"
-      redirect "/workouts/#{@workout.slug}"
+      redirect "/workouts/#{current_workout.slug}"
     else
-      @errors = @workout.errors.full_messages.join(', ')
+      @errors = current_workout.errors.full_messages.join(', ')
       erb :'/workouts/create_workout'
     end
   end
+  #   {
+  #     woooooooooooooooooorkout: {
+  #       name: "",
+  #       categyory: '',
+  #       exercise_ids: [1,3,4],
+  #       exercise_attributes: {
+  #         name: "",
+  #         categroy: "",
+  #         sets: 1,
+  #         reps: 11
+  #       }
+  #     }
+  #   }
+  #
+  #
+  #
+  #
+  #
+  # #   @user = current_user
+  # #   if params[:exercises].nil?
+  #     session[:message] = "Please choose at least one exercise for the workout"
+  #     redirect '/workouts/new'
+  #   end
+  #   Workout.all.find do |workout|
+  #     if workout.name.downcase == params[:workouts][:name].downcase
+  #       session[:message] = "That workout name is taken. Please choose another"
+  #       redirect '/workouts/new'
+  #     end
+  #   end
+  #   @workout = Workout.new(params[:workouts])
+  #   if @workout.valid?
+  #     @user.workouts << @workout
+  #     @workout.exercise_ids = params[:exercises]
+  #
+  #     @workout.created_by = @user.username #do i want the object here?
+  #     @user.save
+  #     @workout.save
+  #     session[:message] = "You have successfully created a workout!"
+  #     redirect "/workouts/#{@workout.slug}"
+  #   else
+  #     session[:message] = "Please make sure all fields are filled out when creating a new workout"
+  #     redirect '/workouts/new'
+  #   end
+  # end
 
   post '/workouts/exercises/edit' do #could be ugly restfullness
     @user = current_user
