@@ -5,6 +5,7 @@ class CategoriesController < ApplicationController
 
   get '/categories' do
     if logged_in?
+      @user = current_user
       erb :'/categories/categories'
     else
       session[:message] = "Please login or signup to view categories"
@@ -14,8 +15,11 @@ class CategoriesController < ApplicationController
 
   get '/categories/exercises/:name' do #restfullness
     if logged_in?
-      if current_category_exercises
-        erb :'categories/show_exercises'
+      @user = current_user
+      @category = params[:name]
+      if EXERCISE_TYPES.find {|cat| cat.downcase == @category.downcase}
+        @associated_exercises = Exercise.all.select {|cise| cise.category.downcase == @category.downcase}
+        erb :'/categories/show_exercises'
       else
         session[:message] = "Category not found!"
         redirect '/categories'
@@ -28,7 +32,10 @@ class CategoriesController < ApplicationController
 
   get '/categories/workouts/:name' do #restfullness
     if logged_in?
-      if current_category_workouts
+      @user = current_user
+      @category = params[:name]
+      if WORKOUT_TYPES.find {|cat| cat.downcase == @category.downcase}
+        @associated_workouts = Workout.all.select {|work| work.category.downcase == @category.downcase}
         erb :'/categories/show_workouts'
       else
         session[:message] = "Category not found!"

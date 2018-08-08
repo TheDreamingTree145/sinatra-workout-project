@@ -13,9 +13,8 @@
   <ul>
     <li><a href="/workouts/<%= workout.slug %>"><%= workout.name %></a></li>
     <li><a href="/workouts/<%= workout.slug %>/edit">Edit Workout!</a></li>
-    <li>Created By: <%= workout.created_by %> </li>
-    <li>Category: <a href="/categories/workouts/<%= workout.category %>"><%= workout.category %></a> </li>
-    <form action="/users/<%= workout.slug %>/remove" method="post">
+    <li>Category: <%= workout.category %></li>
+    <form action="/users/workouts/<%= workout.slug %>/remove" method="post">
       <input type="hidden" name="<%= workout.slug %>">
       <input type="submit" value="Remove Workout">
     </form>
@@ -23,9 +22,7 @@
   <br>
   <% end %>
   </ul>
-<h4>Here are all your exercises!</h4> <% # How to make unique  %>
-  <% current_user.workouts.each do |workout| %>
-    <% workout.exercises.each do |exercise| %>
-    <a href="/exercises/<%= exercise.slug %>"><%= exercise.name %></a><br>
-    <% end %>
+<h4>Here are all your exercises!</h4>
+  <% current_user.exercises.each do |cise| %>
+    <a href="/exercises/<%= cise.slug %>"><%= cise.name %></a><br>
   <% end %>
